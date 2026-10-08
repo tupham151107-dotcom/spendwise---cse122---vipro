@@ -1,5 +1,4 @@
-const AUTH_SITE_ROOT = location.pathname.slice(0, location.pathname.lastIndexOf("/") + 1);
-const HOMES = Object.fromEntries(Object.entries({ user: "app/dashboard.html", coach: "coach/clients.html", moderator: "moderator/review.html", admin: "admin/system.html" }).map(([role, path]) => [role, `${AUTH_SITE_ROOT}${path}`]));
+const HOMES = { user: "app/dashboard.html", coach: "coach/clients.html", moderator: "moderator/review.html", admin: "admin/system.html" };
 const homeFor = role => location.protocol === "file:" && role === "user" ? "app/dashboard.html" : HOMES[role];
   const NAMES = { user: "Nguyễn Minh Anh", coach: "Lê Thanh Lan", moderator: "Mai Phương", admin: "Trần Minh Đức" };
 
