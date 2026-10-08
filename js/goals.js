@@ -197,6 +197,3 @@
     e.target.reset();
     toast(`Đã tạo mục tiêu "${name}"`, "🎯");
   });
-
-  $("#themeBtn").addEventListener("click", () => { const dark = toggleTheme(); $("#themeBtn").textContent = dark ? "☀️" : "🌙"; });
-  if (document.documentElement.dataset.theme === "dark") $("#themeBtn").textContent = "☀️";

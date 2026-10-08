@@ -151,6 +151,3 @@
     e.target.reset();
     toast(`Đã thêm ${fmtMoney(amt)} vào cột "${name}"`, "📊");
   });
-
-  $("#themeBtn").addEventListener("click", () => { const dark = toggleTheme(); $("#themeBtn").textContent = dark ? "☀️" : "🌙"; });
-  if (document.documentElement.dataset.theme === "dark") $("#themeBtn").textContent = "☀️";

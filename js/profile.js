@@ -132,6 +132,3 @@
       toast("Lưu trên trình duyệt này được, nhưng đồng bộ cloud lỗi: " + error.message, "⚠️");
     }
   });
-
-  $("#themeBtn").addEventListener("click", () => { const dark = toggleTheme(); $("#themeBtn").textContent = dark ? "☀️" : "🌙"; });
-  if (document.documentElement.dataset.theme === "dark") $("#themeBtn").textContent = "☀️";

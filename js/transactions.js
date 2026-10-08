@@ -129,6 +129,3 @@ initAppPage();
   });
   $("#rowEdit").addEventListener("click", () => { toast("Mở form sửa giao dịch (demo)", "✏️"); });
   $("#rowSplit").addEventListener("click", () => { toast("Tách khoản thành 2 giao dịch nhỏ (demo)", "⑂"); });
-
-  $("#themeBtn").addEventListener("click", () => { const dark = toggleTheme(); $("#themeBtn").textContent = dark ? "☀️" : "🌙"; });
-  if (document.documentElement.dataset.theme === "dark") $("#themeBtn").textContent = "☀️";
