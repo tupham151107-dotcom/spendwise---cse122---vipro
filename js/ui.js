@@ -703,4 +703,5 @@ function initAppPage() {
     heartbeat();
     window.setInterval(() => { if (document.visibilityState === "visible") heartbeat(); }, 60_000);
   }
+  document.body.classList.add("app-ready");
 }

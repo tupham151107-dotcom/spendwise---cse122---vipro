@@ -3,6 +3,7 @@
 /* trang app: body tự là khung flex (sidebar + main nằm ngang);
    thiếu dòng này sidebar chiếm nguyên một dòng 100vh đẩy nội dung xuống dưới màn hình */
 body[data-role] { display: flex; min-height: 100vh; align-items: stretch; }
+body[data-auth="required"]:not(.app-ready) { visibility: hidden; }
 
 /* ---------- thanh trên cùng kiểu YouTube: ☰ + logo tên web ---------- */
 :root { --topnav-h: 56px; }
