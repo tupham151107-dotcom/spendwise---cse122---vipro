@@ -101,7 +101,16 @@ function toggleTheme() {
   const dark = document.documentElement.dataset.theme === "dark";
   document.documentElement.dataset.theme = dark ? "" : "dark";
   localStorage.setItem("sw_theme", dark ? "light" : "dark");
+  syncThemeButton();
   return !dark;
+}
+function syncThemeButton() {
+  const dark = document.documentElement.dataset.theme === "dark";
+  const button = $("#themeBtn");
+  if (!button) return;
+  button.textContent = dark ? "🌙" : "☀️";
+  button.title = dark ? "Giao diện tối" : "Giao diện sáng";
+  button.setAttribute("aria-label", dark ? "Giao diện tối" : "Giao diện sáng");
 }
 
 /* ---------- ngôn ngữ giao diện (VI ↔ EN) ---------- */
@@ -620,10 +629,9 @@ function renderShell() {
   const originalAvatar = $(".topbar #avatar");
   if (originalAvatar) originalAvatar.remove();
   const themeButton = topnav.querySelector("#themeBtn");
-  themeButton.textContent = document.documentElement.dataset.theme === "dark" ? "☀️" : "🌙";
+  syncThemeButton();
   themeButton.addEventListener("click", () => {
     const dark = toggleTheme();
-    themeButton.textContent = dark ? "☀️" : "🌙";
     const settingsToggle = $("#darkToggle");
     if (settingsToggle) settingsToggle.checked = dark;
   });
