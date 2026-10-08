@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tạo tài khoản — SpendWise</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div class="auth">
+
+  <aside class="auth-side">
+    <a class="logo" href="index.html"><span class="logo-mark">S</span> SpendWise</a>
+    <span class="eyebrow">BẮT ĐẦU THÔNG MINH</span>
+    <h1>Một kế hoạch vừa với cuộc sống của bạn.</h1>
+    <p>Thiết lập trong 5 phút — SpendWise sẽ lo phần còn lại.</p>
+
+    <div class="side-goal">
+      <div class="sg-head"><span>🏝️ Du lịch Đà Lạt</span><b style="color:#6ee7b7">84%</b></div>
+      <div class="sg-val">12.800.000 ₫ / 28.000.000 ₫ · còn 3 tháng</div>
+      <div class="bar"><i style="width:84%"></i></div>
+    </div>
+
+    <div class="mini-card">
+      <div class="mc-label">THÀNH VIÊN MỚI NHẤN</div>
+      <div class="mc-val">12.480</div>
+      <span class="badge b-green">+8,6% tháng này</span>
+    </div>
+    <div class="copyright">© 2026 SpendWise · Bảo mật &amp; quyền riêng tư</div>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-box">
+      <a class="auth-top-link" href="index.html">← Về trang chủ</a>
+      <h2>Tạo tài khoản</h2>
+      <p class="sub">Miễn phí, không yêu cầu thẻ tín dụng.</p>
+
+      <div class="form-error" id="pwErr">⚠️ <span>Mật khẩu chưa khớp. Vui lòng thử lại.</span></div>
+
+      <form id="regForm" novalidate>
+        <div class="field">
+          <label for="name">Họ và tên</label>
+          <input class="input" id="name" type="text" placeholder="Nguyễn Minh Anh" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <div class="email-entry">
+            <input class="input" id="email" type="email" placeholder="minhanh.nguyen@email.com" autocomplete="email">
+            <button class="email-clear" id="clearEmail" type="button" title="Xóa email" aria-label="Xóa email" hidden>×</button>
+          </div>
+        </div>
+        <div class="field" id="otpField">
+          <label for="otp">Mã OTP gửi đến email</label>
+          <div class="otp-entry">
+            <input class="input" id="otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="Nhập mã trong email">
+            <button class="btn btn-soft otp-send" id="sendOtp" type="button" title="Gửi mã OTP" aria-label="Gửi mã OTP">✉</button>
+          </div>
+          <span class="small muted">Kiểm tra hộp thư đến hoặc thư mục Spam.</span>
+          <span class="small" id="otpStatus" role="status" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <label for="pw">Mật khẩu</label>
+          <div class="input-wrap">
+            <input class="input" id="pw" type="password" placeholder="Tối thiểu 8 ký tự">
+            <button type="button" class="eye">👁️</button>
+          </div>
+          <div class="pw-rules">
+            <span class="pw-rule" data-rule="len"><span class="ico">✓</span> 8+ ký tự</span>
+            <span class="pw-rule" data-rule="upper"><span class="ico">✓</span> 1 chữ hoa</span>
+            <span class="pw-rule" data-rule="num"><span class="ico">✓</span> 1 chữ số</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="pw2">Xác nhận mật khẩu</label>
+          <div class="input-wrap">
+            <input class="input" id="pw2" type="password" placeholder="Nhập lại mật khẩu">
+            <button type="button" class="eye">👁️</button>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:20px">
+          <label>Mục tiêu tài chính ban đầu:</label>
+          <div class="row wrap" style="gap:9px">
+            <label class="chip-select"><input type="radio" name="goal"><span>💰 Tiết kiệm nhanh</span></label>
+            <label class="chip-select"><input type="radio" name="goal" checked><span>🎯 Trả nợ</span></label>
+            <label class="chip-select"><input type="radio" name="goal"><span>🏝️ Mục tiêu du lịch</span></label>
+          </div>
+        </div>
+
+        <label class="check" style="margin:16px 0 18px">
+          <input type="checkbox" id="agree">
+          <span class="box">✓</span>
+          <span>Tôi đồng ý với <a href="legal.html#terms" style="color:var(--accent-2);font-weight:600">Điều khoản</a> &amp; <a href="legal.html#privacy" style="color:var(--accent-2);font-weight:600">Chính sách bảo mật</a></span>
+        </label>
+
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Tạo tài khoản SpendWise</button>
+      </form>
+
+      <p class="auth-alt">Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
+    </div>
+  </main>
+</div>
+
+<script src="js/vendor/supabase.js?v=10"></script>
+<script src="js/supabase-cloud.js?v=10"></script>
+<script src="js/data.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/register.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hồ sơ cá nhân — SpendWise</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="user" data-page="Hồ sơ" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div><h1>Hồ sơ cá nhân</h1><div class="sub">Thông tin &amp; thói quen tài chính của bạn</div></div>
+    </div>
+    <div class="row">
+      <button class="icon-btn" id="themeBtn">🌙</button>
+      <button class="btn btn-primary btn-sm" id="editBtn">✏️ Chỉnh sửa thông tin</button>
+      <a class="avatar" href="/app/profile.html" id="avatar">MA</a>
+    </div>
+  </div>
+
+  <div class="profile-hero">
+    <span class="avatar lg" id="bigAvatar" title="Đổi avatar" style="cursor:pointer">MA</span>
+    <div style="flex:1;min-width:200px">
+      <div class="row wrap" style="gap:10px">
+        <h2 style="font-size:22px" id="heroName">Nguyễn Minh Anh</h2>
+        <span class="badge member-badge">✦ THÀNH VIÊN</span>
+      </div>
+      <div class="small mt-8" style="color:#a9cbbc" id="heroMeta">minhanh.nguyen@email.com · TP. Hồ Chí Minh · Tham gia 12/03/2025</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:30px;font-weight:800" data-count="85" data-suffix="%">0%</div>
+      <div class="small" style="color:#a9cbbc">hồ sơ hoàn thiện</div>
+    </div>
+  </div>
+
+  <div class="stats mt-16">
+    <div class="card stat hoverable"><span class="s-label">Thu nhập hàng tháng</span><span class="s-value" data-count="35000000" data-money>0 ₫</span><span class="s-foot">cập nhật 01/10</span></div>
+    <div class="card stat hoverable"><span class="s-label">Tỷ lệ tiết kiệm</span><span class="s-value" data-count="22" data-suffix="%">0%</span><span class="s-foot"><span class="trend up">+3%</span> so với tháng 9</span></div>
+    <div class="card stat hoverable"><span class="s-label">Mục tiêu đang theo</span><span class="s-value" data-count="3" data-suffix=" mục tiêu">0</span><span class="s-foot">trung bình 52,5%</span></div>
+  </div>
+
+  <div class="grid-2-even">
+    <div class="card card-pad">
+      <h3 style="margin-bottom:16px">Thông tin cá nhân</h3>
+      <div class="grid-2-even" style="gap:0 12px">
+        <div class="field"><label>Họ và tên</label><input class="input" id="fName" disabled></div>
+        <div class="field"><label>Số điện thoại</label><input class="input" id="fPhone" value="090 234 5678" disabled></div>
+        <div class="field"><label>Nghề nghiệp</label><input class="input" id="fJob" value="Product Designer" disabled></div>
+        <div class="field"><label>Thu nhập dự kiến (₫)</label><input class="input" id="fIncome" value="35000000" disabled></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card card-pad">
+        <h3 style="margin-bottom:14px">Mục tiêu &amp; thói quen</h3>
+        <div class="row between" style="margin-bottom:7px">
+          <span class="small" style="font-weight:600">🧳 QUỸ DU LỊCH ĐÀ NẴNG</span>
+          <span class="badge b-green">45%</span>
+        </div>
+        <div class="bar"><i style="width:45%"></i></div>
+        <div class="row between mt-8">
+          <span class="small muted">5.850.000 ₫</span><span class="small muted">/ 13.000.000 ₫</span>
+        </div>
+        <div class="row wrap mt-16" style="gap:8px">
+          <span class="badge b-teal">☕ Rà soát cà phê</span>
+          <span class="badge b-teal">🌙 Auto-save lương</span>
+          <span class="badge b-teal">📊 Kiểm tra Chủ nhật</span>
+        </div>
+      </div>
+      <div class="card card-pad mt-16">
+        <div class="row" style="gap:10px;align-items:flex-start">
+          <span style="font-size:18px">📝</span>
+          <div>
+            <b class="small">GHI CHÚ</b>
+            <p class="small muted mt-8" style="font-style:italic">"Mình muốn giữ 20% thu nhập cho mục tiêu du lịch, cắt bớt tài khoản streaming không dùng tới."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- modal đổi avatar -->
+<div class="modal-back" id="avModal">
+  <div class="modal" style="max-width:400px">
+    <div class="m-head">
+      <div><h3>Đổi avatar</h3><span class="small muted">Chọn emoji hoặc tải ảnh của bạn lên</span></div>
+      <button class="m-close" data-close>✕</button>
+    </div>
+    <div class="row" style="gap:14px;align-items:center;margin-bottom:14px">
+      <span class="avatar lg" id="avPreview">MA</span>
+      <div class="small muted">Avatar hiển thị ở góc phải mỗi trang và trong thanh bên.</div>
+    </div>
+    <div id="avEmoji" style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px"></div>
+    <div class="row" style="gap:8px">
+      <button class="btn btn-soft btn-sm grow" id="avUpload">📷 Tải ảnh lên</button>
+      <button class="btn btn-ghost btn-sm" id="avReset">↺ Mặc định</button>
+    </div>
+    <input type="file" id="avFile" accept="image/*" hidden>
+    <button class="btn btn-primary btn-block btn-lg mt-16" id="avSave">Lưu avatar</button>
+  </div>
+</div>
+
+<script src="../js/vendor/supabase.js?v=4"></script>
+<script src="../js/supabase-cloud.js?v=4"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script src="../js/profile.js?v=1"></script>
+</body>
+</html>

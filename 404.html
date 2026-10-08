@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Không tìm thấy trang — SpendWise</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/error.css">
+</head>
+<body>
+
+<div class="err-top">
+  <a class="logo" href="index.html"><span class="logo-mark">S</span> SpendWise</a>
+  <span class="sys-pill"><i></i> Hệ thống hoạt động bình thường</span>
+</div>
+
+<div class="err-wrap">
+  <div>
+    <span class="err-eyebrow muted">TRANG KHÔNG TỒN TẠI</span>
+    <h1>Khoản bạn tìm không ở đây.</h1>
+    <p class="lead">Đường dẫn có thể đã đổi hoặc bị xoá. Thử tìm kiếm hoặc chọn một điểm đến gợi ý bên dưới.</p>
+
+    <form class="nf-search" id="nfForm">
+      <div class="input-wrap">
+        <span class="search-ico">🔍</span>
+        <input class="input" id="nfQ" type="text" placeholder="Tìm kiếm trong SpendWise...">
+      </div>
+      <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+    </form>
+    <div class="no-match" id="noMatch">😕 Không có mục nào khớp — thử "ngân sách" hoặc "mục tiêu".</div>
+
+    <div class="nf-suggest" id="sug">
+      <a href="app/dashboard.html">📊 Tổng quan tài chính</a>
+      <a href="app/budgets.html">💰 Ngân sách tháng 10</a>
+      <a href="app/goals.html">🎯 Mục tiêu tiết kiệm</a>
+      <a href="app/transactions.html">🔁 Giao dịch</a>
+      <a href="app/notifications.html">🔔 Thông báo</a>
+    </div>
+
+    <div class="err-actions">
+      <a class="btn btn-soft" href="index.html">🏠 Về trang chủ</a>
+      <a class="btn btn-ghost" href="javascript:history.back()">↩ Quay lại trang trước</a>
+    </div>
+  </div>
+
+  <div class="nf-card">
+    <div class="nf-big">4<span class="q">0</span>4</div>
+    <p class="muted small">Bạn đã đi lạc khỏi dòng thời gian tài chính.</p>
+    <div class="nf-map">
+      <span class="pin"></span>
+      <span>Vị trí của bạn</span>
+      <span class="nf-road"></span>
+      <span>🏠 SpendWise</span>
+    </div>
+  </div>
+</div>
+
+<script src="js/ui.js"></script>
+<script>
+  const q = $("#nfQ"), links = $$("#sug a");
+  q.addEventListener("input", () => {
+    const v = q.value.toLowerCase().trim();
+    let hit = 0;
+    links.forEach(a => {
+      const m = a.textContent.toLowerCase().includes(v);
+      a.classList.toggle("match", v && m);
+      if (m) hit++;
+    });
+    $("#noMatch").classList.toggle("show", v && !hit);
+  });
+  $("#nfForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const first = links.find(a => a.classList.contains("match"));
+    if (first) first.click();
+    else { $("#noMatch").classList.add("show"); $("#noMatch").style.animation = "none"; $("#noMatch").offsetHeight; $("#noMatch").style.animation = ""; }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phản hồi — SpendWise Kiểm duyệt</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="moderator" data-page="Phản hồi" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div><h1>Trung tâm phản hồi</h1><div class="sub">Ý kiến người dùng · phản hồi trong 24 giờ</div></div>
+    </div>
+    <div class="row">
+      <button class="btn btn-ghost btn-sm" id="exportBtn">⬇ Xuất CSV</button>
+      <button class="icon-btn" id="themeBtn">🌙</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="card stat hoverable"><span class="s-label">Mới</span><span class="s-value" style="color:var(--purple)" data-count="14">0</span><span class="s-foot"><span class="badge b-purple">+6 hôm nay</span></span></div>
+    <div class="card stat hoverable"><span class="s-label">Đang xử lý</span><span class="s-value" data-count="9">0</span><span class="s-foot">Trung bình 13 giờ phản hồi đầu</span></div>
+    <div class="card stat hoverable"><span class="s-label">Đã giải quyết</span><span class="s-value" style="color:var(--accent)" data-count="87" data-suffix="%">0%</span><span class="s-foot">CSAT 4.6/5 ⭐</span></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="panel-head" style="padding-bottom:12px">
+        <h3>Hộp thư phản hồi</h3>
+        <span class="small muted"><span data-row-count>4</span> mục</span>
+      </div>
+      <div class="filter-bar">
+        <div class="input-wrap">
+          <span class="search-ico">🔍</span>
+          <input class="input" id="fbSearch" placeholder="Tìm tiêu đề, người gửi...">
+        </div>
+        <div class="dd">
+          <button class="btn btn-ghost dd-toggle">Tất cả loại ▾</button>
+          <div class="dd-menu">
+            <button data-type="*">Tất cả loại</button>
+            <button data-type="AI">AI</button>
+            <button data-type="Tính năng">Tính năng</button>
+            <button data-type="Lỗi">Lỗi</button>
+            <button data-type="Khen ngợi">Khen ngợi</button>
+          </div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl" id="fbTable">
+          <thead><tr><th>Tiêu đề</th><th>Người gửi</th><th>Loại</th><th>Ưu tiên</th><th>Trạng thái</th></tr></thead>
+          <tbody id="fbBody"></tbody>
+        </table>
+      </div>
+      <div class="empty hidden" data-empty-for><div class="e-ico">🔍</div>Không có phản hồi nào khớp tìm kiếm.</div>
+    </div>
+
+    <div class="detail-panel">
+      <div class="card card-pad" id="detail"><span class="center muted small">Chọn một phản hồi để xem chi tiết</span></div>
+    </div>
+  </div>
+</main>
+
+<div class="modal-back" id="replyModal">
+  <div class="modal">
+    <div class="m-head">
+      <div><h3>↩ Trả lời phản hồi</h3><span class="small muted" id="replyWho">—</span></div>
+      <button class="m-close" data-close>✕</button>
+    </div>
+    <div class="row wrap" style="gap:8px;margin-bottom:12px">
+      <button class="btn btn-soft btn-sm" data-quick="Cảm ơn bạn đã góp ý! Đội ngũ đã ghi nhận và sẽ cập nhật sớm.">Đã ghi nhận</button>
+      <button class="btn btn-soft btn-sm" data-quick="Bạn có thể gửi thêm ảnh chụp màn hình không? Cần thêm thông tin để tái hiện lỗi.">Cần thêm thông tin</button>
+      <button class="btn btn-soft btn-sm" data-quick="Lỗi đã được chuyển sang đội kỹ thuật, bạn sẽ nhận thông báo khi sửa xong.">Đã chuyển dev</button>
+    </div>
+    <div class="field"><label>Nội dung trả lời</label><textarea class="input" id="replyText" rows="4" placeholder="Viết câu trả lời..."></textarea></div>
+    <div class="row mt-16" style="justify-content:flex-end;gap:9px">
+      <button class="btn btn-ghost" data-close>Huỷ</button>
+      <button class="btn btn-accent" id="sendReply">Gửi phản hồi</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script>
+  initAppPage();
+  const FB = SW_DATA.feedback;
+  let cur = -1;
+
+  const TYPE = { "AI": "b-purple", "Tính năng": "b-blue", "Lỗi": "b-red", "Khen ngợi": "b-green" };
+  const PRIO = { "Cao": "b-red", "Vừa": "b-yellow", "Thấp": "b-green" };
+
+  function rowHTML(f, i) {
+    return `
+      <td><div class="tx-desc"><span class="badge b-gray">${f.id}</span>&nbsp;<b>${f.title}</b></div></td>
+      <td class="muted">${f.from}</td>
+      <td><span class="badge ${TYPE[f.type]}">${f.type}</span></td>
+      <td><span class="badge ${PRIO[f.prio]}">${f.prio}</span></td>
+      <td><span class="st st-${f.st}">${f.status}</span></td>`;
+  }
+  function render() { $("#fbBody").innerHTML = FB.map((f, i) => `<tr class="selectable" data-idx="${i}">${rowHTML(f, i)}</tr>`).join(""); applyFilter(); }
+  function bindRows() { $$("#fbBody tr").forEach(tr => tr.addEventListener("click", () => show(+tr.dataset.idx))); }
+
+  function show(i) {
+    cur = i;
+    const f = FB[i];
+    $$("#fbBody tr").forEach((tr, x) => tr.classList.toggle("selected", x === i));
+    const d = $("#detail");
+    d.style.animation = "none"; d.offsetHeight; d.style.animation = "page-in .35s";
+    const solved = f.status === "Đã giải quyết";
+    d.innerHTML = `
+      <div class="row" style="gap:8px"><span class="badge b-purple">${f.id}</span><span class="badge ${TYPE[f.type]}">${f.type}</span></div>
+      <h3 style="margin:10px 0 6px">${f.title}</h3>
+      <div class="small muted">Từ <b>${f.from}</b> · ưu tiên <span class="badge ${PRIO[f.prio]}">${f.prio}</span> · <span class="st st-${f.st}">${f.status}</span></div>
+      <p class="small mt-16" style="line-height:1.65">${f.detail}</p>
+      <div class="row wrap mt-16" style="gap:8px">
+        <button class="btn btn-accent btn-sm grow" data-act="reply">↩ Trả lời</button>
+        <button class="btn btn-ghost btn-sm grow" data-act="ai">🤖 Gắn với template AI</button>
+      </div>
+      ${solved ? `<div class="mt-16 center"><span class="badge b-green">✓ Đã giải quyết</span></div>`
+               : `<button class="btn btn-ghost btn-sm mt-16" style="width:100%" data-act="solve">✓ Đánh dấu đã giải quyết</button>`}
+    `;
+    $$("[data-act]", d).forEach(b => b.addEventListener("click", () => {
+      const act = b.dataset.act;
+      if (act === "reply") {
+        $("#replyWho").textContent = `Phản hồi ${f.id} · gửi tới ${f.from}`;
+        $("#replyText").value = "";
+        openModal("#replyModal");
+      }
+      if (act === "ai") toast(`Đã gắn ${f.id} với mẫu "expense_categorizer_vi" để học quy tắc`, "🤖");
+      if (act === "solve") {
+        f.status = "Đã giải quyết"; f.st = "ok";
+        paint(i);
+        toast(`Đã đóng phản hồi ${f.id} — CSAT +1`, "🎉");
+      }
+    }));
+  }
+
+  function paint(i) {
+    $$("#fbBody tr")[i].innerHTML = rowHTML(FB[i], i);
+    show(i);
+  }
+
+  /* --- lọc kết hợp: tìm kiếm + loại --- */
+  let q = "", type = "*";
+  function applyFilter() {
+    let shown = 0;
+    $$("#fbBody tr").forEach(tr => {
+      const f = FB[+tr.dataset.idx];
+      const hit = (type === "*" || f.type === type) && (f.title + " " + f.from + " " + f.id).toLowerCase().includes(q);
+      tr.style.display = hit ? "" : "none";
+      if (hit) shown++;
+    });
+    $("[data-row-count]").textContent = shown;
+    $("[data-empty-for]").classList.toggle("hidden", shown > 0);
+  }
+  $("#fbSearch").addEventListener("input", e => { q = e.target.value.toLowerCase().trim(); applyFilter(); });
+  $$(".dd-menu [data-type]").forEach(b => b.addEventListener("click", () => {
+    type = b.dataset.type;
+    $(".dd-toggle").textContent = (type === "*" ? "Tất cả loại" : type) + " ▾";
+    $(".dd").classList.remove("open");
+    applyFilter();
+  }));
+
+  /* --- trả lời --- */
+  $$("[data-quick]").forEach(b => b.addEventListener("click", () => { $("#replyText").value = b.dataset.quick; }));
+  $("#sendReply").addEventListener("click", () => {
+    const f = FB[cur];
+    if (!$("#replyText").value.trim()) { toast("Hãy viết nội dung trả lời trước", "✏️"); return; }
+    if (f.status === "Mới") { f.status = "Đang xử lý"; f.st = "info"; }
+    closeModal("#replyModal");
+    paint(cur);
+    toast(`Đã gửi trả lời tới ${f.from}`, "📨");
+  });
+
+  /* --- xuất CSV --- */
+  $("#exportBtn").addEventListener("click", () => {
+    const rows = [["ID", "Tiêu đề", "Người gửi", "Loại", "Ưu tiên", "Trạng thái"],
+      ...FB.map(f => [f.id, f.title, f.from, f.type, f.prio, f.status])];
+    const csv = "\uFEFF" + rows.map(r => r.map(c => `"${c}"`).join(",")).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    a.download = "phan-hoi-nguoi-dung.csv"; a.click();
+    toast("Đã xuất danh sách phản hồi", "⬇");
+  });
+
+  render(); bindRows(); show(0);
+
+  $("#themeBtn").addEventListener("click", () => { const dark = toggleTheme(); $("#themeBtn").textContent = dark ? "☀️" : "🌙"; });
+  if (document.documentElement.dataset.theme === "dark") $("#themeBtn").textContent = "☀️";
+</script>
+</body>
+</html>

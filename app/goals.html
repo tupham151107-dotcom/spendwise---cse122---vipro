@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mục tiêu tiết kiệm — SpendWise</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="user" data-page="Mục tiêu" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div><h1>Mục tiêu tiết kiệm</h1><div class="sub">Đếm ngược từng bước tới đích</div></div>
+    </div>
+    <div class="row">
+      <button class="icon-btn" id="themeBtn">🌙</button>
+      <a class="avatar" href="/app/profile.html" id="avatar">MA</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="card stat"><span class="s-label">Tổng đã tiết kiệm</span><span class="s-value" data-count="63000000" data-money>0 ₫</span><span class="s-foot">3 mục tiêu đang chạy</span></div>
+    <div class="card stat"><span class="s-label">Tiến độ trung bình</span><span class="s-value" data-count="52.5" data-dec="1" data-suffix="%">0%</span><span class="s-foot"><span class="trend up">+4,2%</span> tháng này</span></div>
+    <div class="card stat"><span class="s-label">Đóng góp tháng này</span><span class="s-value" data-count="8100000" data-money>0 ₫</span><span class="s-foot">đều đặn 3 tháng liền</span></div>
+    <div class="card stat"><button class="btn btn-accent btn-block" data-modal="#goalModal" style="align-self:center;margin-top:14px">+ Tạo mục tiêu</button></div>
+  </div>
+
+  <div class="goal-grid" id="goalGrid"></div>
+
+  <div class="card card-pad mt-16" style="border:1px solid var(--purple-line);background:var(--purple-soft)">
+    <div class="row between wrap">
+      <div class="row" style="gap:13px;align-items:flex-start">
+        <div class="ai-ico" style="width:40px;height:40px;border-radius:13px;background:var(--purple);color:#fff;display:grid;place-items:center;font-size:18px;flex:0 0 40px">🧙</div>
+        <div style="max-width:640px">
+          <span class="badge b-purple">GOAL COACH · KẾ HOẠCH 6 TUẦN</span>
+          <p style="margin-top:8px;font-size:14px" id="coachPlan"></p>
+        </div>
+      </div>
+      <div class="row wrap" style="gap:8px">
+        <button class="btn btn-purple btn-sm" id="acceptPlan">✓ Chấp nhận kế hoạch</button>
+        <button class="btn btn-ghost btn-sm" id="editPlan">Sửa</button>
+        <button class="btn btn-ghost btn-sm" id="regenPlan">Tạo lại</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-16">
+    <div class="panel-head" style="padding-bottom:10px">
+      <h3>Cột mốc gần nhất</h3><span class="small muted" id="msUpd">cập nhật 03/10</span>
+    </div>
+    <div id="msList" class="card-pad" style="padding-top:0"></div>
+  </div>
+</main>
+
+<div class="modal-back" id="goalModal">
+  <div class="modal">
+    <div class="m-head">
+      <div><h3>Tạo mục tiêu mới</h3><span class="small muted">Đặt đích rõ ràng, tiến độ tự động</span></div>
+      <button class="m-close" data-close>✕</button>
+    </div>
+    <form id="goalForm" novalidate>
+      <div class="field"><label>Tên mục tiêu</label><input class="input" id="gName" placeholder="VD: Mua máy ảnh"></div>
+      <div class="grid-2-even" style="gap:10px">
+        <div class="field"><label>Số tiền mục tiêu (₫)</label><input class="input" id="gTarget" type="text" inputmode="numeric" placeholder="10.000.000"></div>
+        <div class="field"><label>Biểu tượng</label>
+          <select class="select" id="gEmoji"><option>🎯</option><option>🏝️</option><option>💻</option><option>🏠</option><option>🚗</option><option>💍</option></select>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block btn-lg" type="submit">Tạo mục tiêu</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-back" id="savModal">
+  <div class="modal" style="max-width:360px">
+    <div class="m-head">
+      <div><h3 id="savTitle">Số tiền đã tiết kiệm</h3><span class="small muted" id="savSub">Nhập số tiền</span></div>
+      <button class="m-close" data-close>✕</button>
+    </div>
+    <form id="savForm" novalidate>
+      <div class="field"><label>Số tiền (₫)</label><input class="input" id="sAmt" type="text" inputmode="numeric" placeholder="2.000.000"></div>
+      <div class="field" id="sMonthField" style="display:none"><label>Đóng góp tháng này (₫) — để 0 nếu muốn xóa</label><input class="input" id="sMonth" type="text" inputmode="numeric" placeholder="0"></div>
+      <button class="btn btn-primary btn-block" type="submit">Lưu</button>
+    </form>
+  </div>
+</div>
+
+<script src="../js/vendor/supabase.js?v=4"></script>
+<script src="../js/supabase-cloud.js?v=4"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script src="../js/goals.js?v=1"></script>
+</body>
+</html>

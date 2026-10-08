@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cài đặt — SpendWise</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="user" data-page="Cài đặt" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div><h1>Cài đặt</h1><div class="sub">Tuỳ chỉnh trải nghiệm SpendWise</div></div>
+    </div>
+    <div class="row">
+      <button class="btn btn-ghost btn-sm" id="saveBtn" disabled><span id="savedTxt">✓ Đã lưu</span> <span id="savedAt"></span></button>
+      <a class="avatar" href="/app/profile.html" id="avatar">MA</a>
+    </div>
+  </div>
+
+  <div class="tabs" data-tabs="#setPanels" style="margin-bottom:16px">
+    <button class="active" data-filter="acc">Tài khoản</button>
+    <button data-filter="sec">Bảo mật</button>
+    <button data-filter="ui">Giao diện</button>
+    <button data-filter="priv">Quyền riêng tư</button>
+    <button data-filter="ai">Tùy chọn AI</button>
+  </div>
+
+  <div id="setPanels">
+    <!-- TÀI KHOẢN -->
+    <div class="grid-2-even" data-tab-item data-tab="acc">
+      <div class="card card-pad">
+        <h3 style="margin-bottom:8px">Tài khoản &amp; hiển thị</h3>
+        <div class="set-row">
+          <div><div class="t">Email</div><div class="d" id="emailNow">minhanh.nguyen@email.com</div></div>
+          <button class="btn btn-ghost btn-sm" id="changeEmail">Đổi</button>
+        </div>
+        <div class="set-row">
+          <div><div class="t">Ngôn ngữ</div><div class="d">Ngôn ngữ hiển thị của app</div></div>
+          <select class="select" style="width:150px" id="langSelect" data-set><option value="vi">Tiếng Việt</option><option value="en">English</option></select>
+        </div>
+        <div class="set-row">
+          <div><div class="t">Đơn vị tiền tệ</div><div class="d">Dùng cho mọi số liệu · tỷ giá demo cố định</div></div>
+          <select class="select" style="width:150px" id="currencySelect" title="Quy đổi minh họa theo tỷ giá cố định 1 USD = 25.000 VND" data-set>
+            <option value="VND">VND (₫)</option><option value="USD">USD ($)</option>
+          </select>
+        </div>
+      </div>
+      <div class="card card-pad">
+        <h3 style="margin-bottom:8px">Thông báo</h3>
+        <div class="set-row">
+          <div><div class="t">Giao dịch tối</div><div class="d">Nhắc khi phát sinh sau 22:00</div></div>
+          <label class="switch"><input type="checkbox" checked data-set><span class="track"></span><span class="thumb"></span></label>
+        </div>
+        <div class="set-row">
+          <div><div class="t">Thông báo email</div><div class="d">Tóm tắt hàng tuần vào sáng thứ Hai</div></div>
+          <label class="switch"><input type="checkbox" checked data-set><span class="track"></span><span class="thumb"></span></label>
+        </div>
+        <div class="set-row">
+          <div><div class="t">Cảnh báo vượt ngân sách</div><div class="d">Gửi ngay khi đạt 90% hạn mức</div></div>
+          <label class="switch"><input type="checkbox" data-set><span class="track"></span><span class="thumb"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- BẢO MẬT -->
+    <div class="grid-2-even" data-tab-item data-tab="sec" hidden>
+      <div class="card card-pad">
+        <h3 style="margin-bottom:8px">Mật khẩu &amp; xác thực</h3>
+        <div class="set-row"><div><div class="t">Đổi mật khẩu</div><div class="d">Cập nhật lần trước 84 ngày trước</div></div><button class="btn btn-ghost btn-sm">Đổi</button></div>
+        <div class="set-row"><div><div class="t">Xác thực 2 lớp (2FA)</div><div class="d">Bảo vệ tài khoản bằng app authenticator</div></div><label class="switch"><input type="checkbox" checked data-set><span class="track"></span><span class="thumb"></span></label></div>
+        <div class="set-row"><div><div class="t">Thiết bị hoạt động gần đây</div><div class="d" id="deviceCount">Đang tải danh sách thiết bị…</div></div><button class="btn btn-ghost btn-sm" id="refreshDevices">↻ Làm mới</button></div>
+        <div class="set-row"><div><div class="t">Đăng xuất tài khoản</div><div class="d">Đăng xuất khỏi thiết bị hiện tại</div></div><button class="btn btn-danger btn-sm" id="logoutCurrent">Đăng xuất</button></div>
+      </div>
+      <div class="card card-pad">
+        <h3 style="margin-bottom:8px">Phiên đăng nhập</h3>
+        <div id="deviceList" aria-live="polite"><p class="small muted">Đang tải…</p></div>
+        <p class="small muted" style="margin-top:10px">Thiết bị được tính là đang hoạt động khi ứng dụng gửi tín hiệu trong 2 phút gần nhất. Đóng trình duyệt hoặc mất mạng có thể khiến trạng thái cập nhật trễ.</p>
+      </div>
+    </div>
+
+    <!-- GIAO DIỆN -->
+    <div class="card card-pad" data-tab-item data-tab="ui" hidden>
+      <h3 style="margin-bottom:8px">Giao diện</h3>
+      <div class="set-row">
+        <div><div class="t">🌙 Chế độ tối</div><div class="d">Áp dụng ngay cho toàn bộ ứng dụng</div></div>
+        <label class="switch"><input type="checkbox" id="darkToggle" data-set><span class="track"></span><span class="thumb"></span></label>
+      </div>
+      <div class="set-row">
+        <div><div class="t">Kích thước chữ</div><div class="d">Dễ đọc hơn trên màn hình nhỏ</div></div>
+        <select class="select" style="width:150px" data-set><option>Chuẩn</option><option>To</option></select>
+      </div>
+      <div class="set-row">
+        <div><div class="t">Hiệu ứng chuyển động</div><div class="d">Biểu đồ vẽ chậm, đếm số tăng dần</div></div>
+        <label class="switch"><input type="checkbox" checked data-set><span class="track"></span><span class="thumb"></span></label>
+      </div>
+    </div>
+
+    <!-- QUYỀN RIÊNG TƯ -->
+    <div class="grid-2-even" data-tab-item data-tab="priv" hidden>
+      <div class="card card-pad">
+        <h3 style="margin-bottom:8px">Quyền riêng tư &amp; dữ liệu</h3>
+        <div class="set-row"><div><div class="t">Ẩn số dư khi người khác nhìn màn hình</div><div class="d">Hiển thị •••••• cho tới khi chạm giữ</div></div><label class="switch"><input type="checkbox" data-set><span class="track"></span><span class="thumb"></span></label></div>
+        <div class="set-row"><div><div class="t">Xuất dữ liệu</div><div class="d">CSV hoặc PDF toàn bộ giao dịch</div></div><button class="btn btn-soft btn-sm" id="exportBtn">⬇ Xuất</button></div>
+        <div class="set-row"><div><div class="t">Mật khẩu &amp; xác thực</div><div class="d">Quản lý đăng nhập và 2FA</div></div><button class="btn btn-ghost btn-sm" data-goto-tab="sec">Mở →</button></div>
+      </div>
+      <div class="card card-pad" style="border:1px solid var(--purple-line)">
+        <div class="row" style="gap:10px;align-items:flex-start">
+          <span style="font-size:18px">🛡️</span>
+          <div>
+            <b class="small">CAM KẾT RIÊNG TƯ</b>
+            <p class="small muted mt-8">Dữ liệu của bạn không bao giờ được bán. AI chỉ đọc dữ liệu đã ẩn danh và mọi phân tích chạy trong môi trường cách ly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI -->
+    <div class="card card-pad" data-tab-item data-tab="ai" hidden>
+      <h3 style="margin-bottom:8px">Tùy chọn AI</h3>
+      <div class="set-row"><div><div class="t">✨ Insight chi tiêu bằng AI</div><div class="d">Gợi ý điều chỉnh ngân sách hằng tuần</div></div><label class="switch"><input type="checkbox" checked data-set><span class="track"></span><span class="thumb"></span></label></div>
+      <div class="set-row"><div><div class="t">🤖 Tự động phân loại giao dịch</div><div class="d">AI gán danh mục, bạn chỉ cần xác nhận</div></div><label class="switch"><input type="checkbox" checked data-set><span class="track"></span><span class="thumb"></span></label></div>
+      <div class="set-row"><div><div class="t">🎯 Cá nhân hoá thông minh</div><div class="d">Học thói quen để đề xuất chính xác hơn</div></div><label class="switch"><input type="checkbox" data-set><span class="track"></span><span class="thumb"></span></label></div>
+      <div class="set-row"><div><div class="t">Độ chính xác hiện tại</div><div class="d">Mô hình expense_categorizer_vi v2.4</div></div><span class="badge b-purple">91,8% · +2,4%</span></div>
+    </div>
+  </div>
+</main>
+
+<script src="../js/vendor/supabase.js?v=4"></script>
+<script src="../js/supabase-cloud.js?v=4"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script src="../js/settings.js?v=1"></script>
+</body>
+</html>

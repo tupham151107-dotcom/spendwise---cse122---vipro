@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giao dịch — SpendWise</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="user" data-page="Giao dịch" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div><h1>Quản lý giao dịch</h1><div class="sub">Ghi nhận, phân loại và kiểm soát từng khoản chi</div></div>
+    </div>
+    <div class="row">
+      <button class="icon-btn" id="themeBtn">🌙</button>
+      <a class="avatar" href="/app/profile.html" id="avatar">MA</a>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="input-wrap">
+      <span class="search-ico">🔍</span>
+      <input class="input" data-live="#txTable" placeholder="Tìm giao dịch...">
+    </div>
+    <div class="dd">
+      <button class="btn btn-ghost dd-toggle">📅 Tháng 10 ▾</button>
+      <div class="dd-menu">
+        <button>Tháng 10</button><button>Tháng 9</button><button>Tháng 8</button><button>Cả năm</button>
+      </div>
+    </div>
+    <select class="select" style="width:auto" id="catFilter">
+      <option value="">≡ Danh mục: Tất cả</option>
+      <option>Ăn uống</option><option>Đi lại</option><option>Nhà ở</option>
+      <option>Giải trí</option><option>Hóa đơn</option><option>Mua sắm</option><option>Thu nhập</option>
+    </select>
+    <button class="btn btn-accent" data-modal="#txModal">+ Thêm giao dịch</button>
+  </div>
+
+  <div class="stats">
+    <div class="card stat"><span class="s-label">Tổng thu</span><span class="s-value" style="color:var(--accent)" id="sumIn">0 ₫</span></div>
+    <div class="card stat"><span class="s-label">Tổng chi</span><span class="s-value" id="sumOut">0 ₫</span></div>
+    <div class="card stat"><span class="s-label">Chênh lệch</span><span class="s-value" style="color:var(--green-700)" id="sumDiff">0 ₫</span></div>
+    <div class="card stat"><span class="s-label">Đã tiết kiệm</span><span class="s-value" style="color:var(--purple)" id="sumSaved">0 ₫</span><span class="s-foot" id="sumSavedFoot">chưa có mục tiêu</span></div>
+  </div>
+
+  <div class="card">
+    <div class="panel-head" style="padding-bottom:12px">
+      <div class="row"><h3>Danh sách giao dịch</h3><span class="badge b-gray"><span data-row-count>12</span> giao dịch</span></div>
+      <button class="btn btn-ghost btn-sm" id="csvBtn">⬇ Xuất CSV</button>
+    </div>
+
+    <div class="ai-bar" id="aiBar">
+      <span style="font-size:16px">🤖</span>
+      <span>AI gợi ý: <b id="aiDesc">BÁNH MÌ HƯƠNG VIỆT - 45K</b> → <span class="badge b-purple">Ăn uống</span> · độ tin cậy <span class="conf">92%</span></span>
+      <span class="grow"></span>
+      <button class="btn btn-purple btn-sm" id="aiAccept">✓ Chấp nhận</button>
+      <button class="btn btn-ghost btn-sm" id="aiEdit">✏️ Sửa</button>
+      <button class="btn btn-ghost btn-sm" id="aiDismiss">🗑 Xóa</button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="tbl" id="txTable">
+        <thead><tr><th>Mô tả</th><th>Danh mục</th><th>Tài khoản</th><th>Ngày</th><th style="text-align:right">Số tiền</th></tr></thead>
+        <tbody id="txBody" data-select-rows></tbody>
+      </table>
+      <div class="empty hidden" data-empty-for><div class="e-ico">🔍</div>Không có giao dịch nào khớp tìm kiếm.</div>
+    </div>
+  </div>
+
+  <div class="selbar" data-selbar>
+    <span>Đã chọn: <b data-selbar-label>—</b></span>
+    <span class="grow"></span>
+    <button class="btn btn-ghost btn-sm" id="rowEdit">✏️ Sửa</button>
+    <button class="btn btn-ghost btn-sm" id="rowDel">🗑 Xóa</button>
+    <button class="btn btn-accent btn-sm" id="rowSplit">⑂ Tách khoản</button>
+  </div>
+</main>
+
+<!-- modal thêm giao dịch -->
+<div class="modal-back" id="txModal">
+  <div class="modal">
+    <div class="m-head">
+      <div><h3>Thêm giao dịch</h3><span class="small muted">AI sẽ tự gợi ý danh mục cho bạn</span></div>
+      <button class="m-close" data-close>✕</button>
+    </div>
+    <form id="txForm" novalidate>
+      <div class="field">
+        <label>Mô tả</label>
+        <input class="input" id="fDesc" placeholder="VD: Cà phê The Coffee House 65K">
+      </div>
+      <div class="grid-2-even" style="gap:10px">
+        <div class="field">
+          <label>Số tiền (₫)</label>
+          <input class="input" id="fAmt" type="text" inputmode="numeric" placeholder="65.000">
+        </div>
+        <div class="field">
+          <label>Loại</label>
+          <select class="select" id="fSign"><option value="-">Chi tiêu</option><option value="+">Thu nhập</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Danh mục <span class="muted small">(AI gợi ý — bạn có thể sửa)</span></label>
+        <select class="select" id="fCat">
+          <option>Ăn uống</option><option>Đi lại</option><option>Nhà ở</option><option>Giải trí</option>
+          <option>Hóa đơn</option><option>Mua sắm</option><option>Thu nhập</option><option>Khác</option>
+        </select>
+      </div>
+      <div class="row" id="aiSuggest" style="background:var(--purple-soft);border:1px solid var(--purple-line);border-radius:11px;padding:9px 13px;font-size:12.5px;margin-bottom:14px">
+        <span>✨</span><span id="aiSuggestTxt">Nhập mô tả để nhận gợi ý…</span>
+      </div>
+      <button class="btn btn-primary btn-block btn-lg" type="submit">Lưu giao dịch</button>
+    </form>
+  </div>
+</div>
+
+<script src="../js/vendor/supabase.js?v=4"></script>
+<script src="../js/supabase-cloud.js?v=4"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script src="../js/transactions.js?v=1"></script>
+</body>
+</html>

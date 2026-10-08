@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duyệt tài nguyên — SpendWise Kiểm duyệt</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="moderator" data-page="Chờ duyệt" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div><h1>Hàng chờ duyệt</h1><div class="sub">Nội dung coach gửi lên · SLA 18 giờ</div></div>
+    </div>
+    <div class="row">
+      <span class="badge b-purple">⏱ SLA 18 giờ</span>
+      <button class="icon-btn" id="themeBtn">🌙</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="card stat hoverable"><span class="s-label">Chờ duyệt</span><span class="s-value" data-count="5">0</span><span class="s-foot"><span class="badge b-orange">2 mục ưu tiên</span></span></div>
+    <div class="card stat hoverable"><span class="s-label">Đã duyệt tuần này</span><span class="s-value" data-count="18">0</span><span class="s-foot"><span class="trend up">94%</span> đúng SLA</span></div>
+    <div class="card stat hoverable"><span class="s-label">Bị trả về</span><span class="s-value" style="color:var(--red)" data-count="3">0</span><span class="s-foot">trong 7 ngày</span></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="panel-head" style="padding-bottom:12px">
+        <h3>Đang chờ bạn xử lý</h3>
+        <span class="small muted">chọn một dòng để xem chi tiết →</span>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl" id="qTable">
+          <thead><tr><th>Nội dung</th><th>Tác giả</th><th>Gửi lúc</th><th>Rủi ro</th><th>Trạng thái</th></tr></thead>
+          <tbody id="qBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="detail-panel">
+      <div class="card card-pad" id="detail">
+        <span class="center muted small">Chọn một nội dung để xem chi tiết</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script>
+  initAppPage();
+  const RISK = { "Thấp": "b-green", "Vừa": "b-yellow", "Cao": "b-red" };
+  const queue = SW_DATA.reviewQueue;
+  let current = null;
+
+  $("#qBody").innerHTML = queue.map((q, i) => `
+    <tr class="selectable" data-idx="${i}">
+      <td><b>${q.title}</b></td>
+      <td class="muted">${q.author}</td>
+      <td class="muted">${q.sent}</td>
+      <td><span class="badge ${RISK[q.risk]}">${q.risk}</span></td>
+      <td><span class="st st-${q.st}">${q.status}</span></td>
+    </tr>`).join("");
+
+  function showDetail(i) {
+    const q = queue[i];
+    current = i;
+    $$("#qBody tr").forEach((tr, x) => tr.classList.toggle("selected", x === i));
+    const d = $("#detail");
+    d.style.animation = "none"; d.offsetHeight; d.style.animation = "page-in .35s";
+    d.innerHTML = `
+      <span class="badge b-purple">XEM TRƯỚC NỘI DUNG</span>
+      <h3 style="margin:10px 0 6px">${q.title}</h3>
+      <div class="small muted">${q.author} · gửi ${q.sent} · rủi ro <span class="badge ${RISK[q.risk]}">${q.risk}</span></div>
+      <p class="small mt-16" style="line-height:1.65">${q.excerpt}</p>
+      ${q.status === "Chờ duyệt" || q.status === "Cần rà soát" ? `
+      <div class="row wrap mt-16" style="gap:8px">
+        <button class="btn btn-accent btn-sm grow" data-do="ok">✓ Chấp nhận</button>
+        <button class="btn btn-ghost btn-sm grow" data-do="fix">✏️ Yêu cầu sửa</button>
+      </div>` : `
+      <div class="mt-16 center"><span class="badge b-gray">Đã xử lý — ${q.status}</span></div>`}
+    `;
+    $$("[data-do]", d).forEach(b => b.addEventListener("click", () => {
+      const ok = b.dataset.do === "ok";
+      q.status = ok ? "Đã duyệt" : "Bị trả về";
+      q.st = ok ? "ok" : "bad";
+      showDetail(i);
+      $$("#qBody tr")[i].innerHTML = `
+        <td><b>${q.title}</b></td><td class="muted">${q.author}</td><td class="muted">${q.sent}</td>
+        <td><span class="badge ${RISK[q.risk]}">${q.risk}</span></td>
+        <td><span class="st st-${q.st}">${q.status}</span></td>`;
+      toast(ok ? `Đã duyệt "${q.title}"` : `Đã trả về "${q.title}" cho ${q.author}`, ok ? "✅" : "↩️");
+    }));
+  }
+
+  $$("#qBody tr").forEach(tr => tr.addEventListener("click", () => showDetail(+tr.dataset.idx)));
+  showDetail(0);
+
+  $("#themeBtn").addEventListener("click", () => { const dark = toggleTheme(); $("#themeBtn").textContent = dark ? "☀️" : "🌙"; });
+  if (document.documentElement.dataset.theme === "dark") $("#themeBtn").textContent = "☀️";
+</script>
+</body>
+</html>

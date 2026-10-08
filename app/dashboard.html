@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tổng quan — SpendWise</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="user" data-page="Tổng quan" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div>
+        <h1>Tổng quan tài chính</h1>
+        <div class="sub" id="todayStr">Thứ Ba, 03 tháng 10</div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="icon-btn" id="themeBtn" title="Đổi giao diện">🌙</button>
+      <a class="avatar" href="/app/profile.html" title="Hồ sơ" id="avatar">MA</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="card stat hoverable">
+      <span class="s-label">Số dư khả dụng <span class="badge b-green">↑8,4%</span></span>
+      <span class="s-value" data-count="28450000" data-money>0 ₫</span>
+      <span class="s-foot"><span class="trend up">↑8,4%</span> tháng này</span>
+    </div>
+    <div class="card stat hoverable">
+      <span class="s-label">Thu nhập <span class="s-ico" style="background:var(--blue-soft)">💼</span></span>
+      <span class="s-value" data-count="35000000" data-money>0 ₫</span>
+      <span class="s-foot">2 nguồn thu</span>
+    </div>
+    <div class="card stat hoverable">
+      <span class="s-label">Chi tiêu <span class="s-ico" style="background:var(--orange-soft)">🛒</span></span>
+      <span class="s-value" data-count="18650000" data-money>0 ₫</span>
+      <span class="s-foot"><span class="trend down">53%</span> thu nhập</span>
+    </div>
+    <div class="card stat hoverable">
+      <span class="s-label">Đã tiết kiệm <span class="s-ico" style="background:var(--purple-soft)">🎯</span></span>
+      <span class="s-value" style="color:var(--purple)" data-count="0" data-money>0 ₫</span>
+      <span class="s-foot">chưa có mục tiêu</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-pad">
+      <div class="row between" style="margin-bottom:10px">
+        <div>
+          <h3>Xu hướng chi tiêu</h3>
+          <span class="small muted">6 tuần gần nhất · đơn vị triệu ₫</span>
+        </div>
+        <span class="badge b-green">−12% so với đỉnh</span>
+      </div>
+      <canvas data-chart="dash-bars" height="190" style="width:100%"></canvas>
+    </div>
+
+    <div class="card card-pad" id="budgetCard">
+      <div class="row between" style="margin-bottom:14px">
+        <h3>Ngân sách tháng 10</h3>
+        <a class="link" href="/app/budgets.html">Chi tiết →</a>
+      </div>
+      <div class="row" style="gap:18px;align-items:center">
+        <canvas data-chart="dash-donut" height="150" width="150" style="width:150px;flex:0 0 150px"></canvas>
+        <div>
+          <div style="font-size:24px;font-weight:800" data-count="78" data-suffix="%">0%</div>
+          <div class="small muted">Đã dùng</div>
+          <div class="mt-8 small"><b>16,65 / 24 triệu ₫</b></div>
+          <div class="small" style="color:var(--accent);font-weight:600">Còn 2.350.000 ₫ an toàn</div>
+        </div>
+      </div>
+      <div class="ai-card mt-16" id="insight">
+        <div class="ai-ico">✦</div>
+        <div>
+          <b>INSIGHT TUẦN NÀY</b>
+          <p><span id="aiText"></span><span class="caret"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-16">
+    <div class="panel-head" style="padding-bottom:12px">
+      <div><h3>Giao dịch gần đây</h3></div>
+      <a class="link" href="/app/transactions.html">Xem tất cả →</a>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Giao dịch</th><th>Danh mục</th><th>Ngày</th><th style="text-align:right">Số tiền</th></tr></thead>
+        <tbody id="recentTx"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script src="../js/vendor/supabase.js?v=4"></script>
+<script src="../js/supabase-cloud.js?v=4"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script src="../js/dashboard.js?v=1"></script>
+</body>
+</html>

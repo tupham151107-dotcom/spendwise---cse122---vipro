@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thông báo — SpendWise</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="user" data-page="Thông báo" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div><h1>Thông báo</h1><div class="sub">Những gì đang xảy ra với tiền của bạn</div></div>
+    </div>
+    <div class="row">
+      <button class="icon-btn" id="themeBtn">🌙</button>
+      <span class="saved-pill" id="readPill">✓ Đã lưu</span>
+      <button class="btn btn-ghost btn-sm" id="readAll">✓ Đánh dấu tất cả đã đọc</button>
+      <a class="avatar" href="/app/profile.html" id="avatar">MA</a>
+    </div>
+  </div>
+
+  <div class="row between wrap" style="margin-bottom:14px">
+    <div class="tabs" data-tabs="#notiList">
+      <button class="active" data-filter="*">Tất cả <span class="cnt" id="cntAll">5</span></button>
+      <button data-filter="Chi tiêu">Chi tiêu</button>
+      <button data-filter="Thu nhập">Thu nhập</button>
+      <button data-filter="Ngân sách">Ngân sách <span class="cnt">2</span></button>
+      <button data-filter="Mục tiêu">Mục tiêu <span class="cnt">1</span></button>
+    </div>
+    <button class="btn btn-ghost btn-sm dd-toggle dd" style="border:1px solid var(--line-2)">7 ngày gần đây ▾</button>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div id="notiList"></div>
+      <div class="card empty hidden" id="noNoti"><div class="e-ico">📭</div>Không có thông báo nào trong mục này.</div>
+    </div>
+
+    <div class="detail-panel">
+      <div class="card card-pad" style="background:linear-gradient(160deg,var(--green-950),var(--green-800));color:#fff;border:0">
+        <h3>Cần bạn xem</h3>
+        <p class="small" style="color:#a9cbbc;margin:6px 0 14px">Giao dịch bất thường phát hiện hôm qua — xác nhận để bảo vệ số dư.</p>
+        <button class="btn btn-accent btn-block" id="handleBtn">Xử lý ngay</button>
+      </div>
+      <div class="card empty mt-16" id="allCaught">
+        <div class="e-ico">🎉</div>
+        <b>Bạn đã đọc hết thông báo</b>
+        <div class="small muted mt-8">Chúng tôi sẽ báo ngay khi có điều mới.</div>
+        <button class="btn btn-ghost btn-sm mt-16" onclick="location.href='/app/dashboard.html'">Xem tất cả</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="../js/vendor/supabase.js?v=4"></script>
+<script src="../js/supabase-cloud.js?v=4"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script src="../js/notifications.js?v=1"></script>
+</body>
+</html>

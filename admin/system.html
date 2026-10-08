@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ thống — SpendWise Quản trị</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="admin" data-page="Hệ thống" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div><h1>Giám sát hệ thống</h1><div class="sub">Uptime · lưu lượng · sức khoẻ dịch vụ</div></div>
+    </div>
+    <div class="row">
+      <span class="badge b-green" id="sysPill">● Hệ thống ổn định</span>
+      <button class="icon-btn" id="themeBtn">🌙</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="card stat hoverable"><span class="s-label">Uptime 30 ngày</span><span class="s-value" style="color:var(--accent)" data-count="99.98" data-dec="2" data-suffix="%">0%</span><span class="s-foot">SLA cam kết 99,9%</span></div>
+    <div class="card stat hoverable"><span class="s-label">Người dùng hoạt động</span><span class="s-value" data-count="8942">0</span><span class="s-foot"><span class="badge b-green">+8,7% MoM</span></span></div>
+    <div class="card stat hoverable"><span class="s-label">AI requests tháng này</span><span class="s-value" style="color:var(--purple)" data-count="184" data-suffix="K">0K</span><span class="s-foot"><span class="badge b-purple">91,8% được chấp nhận</span></span></div>
+  </div>
+
+  <div class="card">
+    <div class="panel-head" style="padding-bottom:12px">
+      <h3>Lưu lượng hệ thống hôm nay</h3>
+      <span class="small muted">req/phút · cao điểm <b style="color:var(--orange)">14h</b></span>
+    </div>
+    <canvas data-chart="traffic" height="230" style="width:100%"></canvas>
+  </div>
+
+  <div class="grid-2 mt-16">
+    <div>
+      <div class="card card-pad">
+        <h3 style="margin-bottom:6px">Tình trạng dịch vụ</h3>
+        <div id="svcList"></div>
+      </div>
+      <div class="card card-pad mt-16">
+        <h3 style="margin-bottom:6px">Sự kiện gần đây</h3>
+        <div id="evtList"></div>
+      </div>
+    </div>
+
+    <div class="detail-panel">
+      <div class="card card-pad">
+        <div class="row between"><h3>Tài nguyên cụm SG-1</h3><span class="badge b-gray">4 node</span></div>
+        <div style="margin-top:16px">
+          <div class="row between small"><b>CPU</b><span><b id="cpuVal">42</b>%</span></div>
+          <div class="bar" style="margin:6px 0 14px"><i id="cpuBar" style="width:0%;transition:width .9s ease"></i></div>
+          <div class="row between small"><b>Memory</b><span><b id="memVal">61</b>%</span></div>
+          <div class="bar" style="margin:6px 0 4px"><i id="memBar" style="width:0%;transition:width .9s ease;background:var(--purple)"></i></div>
+        </div>
+        <p class="small muted mt-16">Cảnh báo khi vượt 85% — tự động mở rộng node thứ 5.</p>
+      </div>
+      <div class="card card-pad mt-16">
+        <h3 style="margin-bottom:10px">CPU 24 giờ qua</h3>
+        <canvas data-chart="cpu-spark" height="110" style="width:100%"></canvas>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script>
+  initAppPage();
+  const SYS = SW_DATA.system;
+
+  /* --- dịch vụ --- */
+  const PING = { "API Gateway": "42ms", "AI Service": "310ms", "Notification": "88ms", "Database": "6ms" };
+  $("#svcList").innerHTML = SYS.services.map((s, i) => `
+    <div class="row between svc-row" data-i="${i}" style="padding:11px 0;border-bottom:1px dashed var(--line);cursor:pointer">
+      <div class="row" style="gap:10px"><span class="dot ${s.st === "ok" ? "g" : "o"}"></span><b>${s.name}</b></div>
+      <div class="row" style="gap:10px"><span class="small muted">${PING[s.name]}</span><span class="st st-${s.st}">${s.up}</span></div>
+    </div>`).join("");
+  $$(".svc-row").forEach(r => r.addEventListener("click", () => {
+    const s = SYS.services[+r.dataset.i];
+    toast(`${s.name} · uptime ${s.up} · ping ${PING[s.name]}`, s.st === "ok" ? "🟢" : "🟠");
+  }));
+
+  /* --- sự kiện --- */
+  $("#evtList").innerHTML = SYS.events.map(e => `
+    <div class="row between" style="padding:11px 0;border-bottom:1px dashed var(--line)">
+      <div class="row" style="gap:10px"><span class="badge b-gray">${e.time}</span><span class="small">${e.txt}</span></div>
+      <span class="st st-${e.st}">${e.status}</span>
+    </div>`).join("");
+
+  /* --- tài nguyên: animate + "live" jitter --- */
+  function paintRes() {
+    $("#cpuVal").textContent = SYS.cpu;
+    $("#memVal").textContent = SYS.mem;
+    $("#cpuBar").style.width = SYS.cpu + "%";
+    $("#memBar").style.width = SYS.mem + "%";
+  }
+  setTimeout(paintRes, 150);
+  setInterval(() => {
+    SYS.cpu = Math.max(28, Math.min(80, SYS.cpu + Math.round((Math.random() - .5) * 6)));
+    SYS.mem = Math.max(45, Math.min(85, SYS.mem + Math.round((Math.random() - .5) * 4)));
+    paintRes();
+    if (SYS.cpu > 75 || SYS.mem > 80) { $("#sysPill").className = "badge b-orange"; $("#sysPill").textContent = "● Tải cao — đang theo dõi"; }
+    else { $("#sysPill").className = "badge b-green"; $("#sysPill").textContent = "● Hệ thống ổn định"; }
+  }, 3500);
+
+  window._charts = {
+    "traffic": el => barChart(el, SYS.traffic, { hot: SYS.hotHour, hotColor: getComputedStyle(document.documentElement).getPropertyValue("--orange").trim() || "#f59e0b", labels: Array.from({ length: 21 }, (_, i) => i + "h"), dur: 1400 }),
+    "cpu-spark": el => spark(el, [38, 41, 44, 40, 47, 42, 39, 43, 41, 42], {})
+  };
+  initCharts();
+
+  $("#themeBtn").addEventListener("click", () => { const dark = toggleTheme(); $("#themeBtn").textContent = dark ? "☀️" : "🌙"; });
+  if (document.documentElement.dataset.theme === "dark") $("#themeBtn").textContent = "☀️";
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duyệt ngân sách — SpendWise Coach</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body data-role="coach" data-page="Duyệt ngân sách" data-auth="required">
+
+<main class="main">
+  <div class="topbar">
+    <div class="row" style="gap:12px">
+      <div>
+        <h1>Duyệt ngân sách</h1>
+        <div class="sub" id="who">Nguyễn Minh Anh · 1 tháng 10/2026</div>
+      </div>
+    </div>
+    <div class="row">
+      <span class="badge b-yellow b-dot" style="font-size:12px">Chờ coach duyệt</span>
+      <button class="icon-btn" id="themeBtn">🌙</button>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="card card-pad">
+        <div class="row between" style="margin-bottom:16px">
+          <h3>Phân bổ đề xuất</h3>
+          <b style="font-size:18px" data-count="24000000" data-money>0 ₫</b>
+        </div>
+        <div id="allocList"></div>
+      </div>
+
+      <div class="ai-card mt-16">
+        <div class="ai-ico">✦</div>
+        <div><b>SPENDING PATTERN INSIGHT</b><p id="patternTxt"></p></div>
+      </div>
+
+      <div class="card card-pad mt-16">
+        <div class="field" style="margin:0">
+          <label>GHI CHÚ COACH</label>
+          <textarea class="textarea" id="note" rows="3" placeholder="Nhắn cho học viên sau khi duyệt…"></textarea>
+        </div>
+        <div class="row between mt-16 wrap">
+          <a href="#" class="link small" id="saveNote">Lưu ghi chú</a>
+          <div class="row" style="gap:9px">
+            <button class="btn btn-ghost btn-sm" id="rejectBtn">☐ Yêu cầu chỉnh sửa</button>
+            <button class="btn btn-accent" id="approveBtn">✓ Duyệt ngân sách</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-panel">
+      <div class="card card-pad" style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <h3>So với 3 tháng trước</h3>
+        <canvas data-chart="rv-donut" height="160" width="160" style="width:160px"></canvas>
+        <div class="center">
+          <div style="font-size:24px;font-weight:800">78%</div>
+          <div class="small muted">Đã dùng trung bình · giảm 6% so với Q3</div>
+        </div>
+      </div>
+      <div class="card card-pad mt-16">
+        <h3 style="margin-bottom:12px">Học viên</h3>
+        <div class="row" style="gap:12px">
+          <span class="avatar" style="width:44px;height:44px;flex-basis:44px;font-size:15px">MA</span>
+          <div>
+            <b>Nguyễn Minh Anh</b>
+            <div class="small muted">Score 82/100 · Ổn định</div>
+          </div>
+          <span class="grow"></span>
+          <span class="badge b-green b-dot">Đúng hạn 78%</span>
+        </div>
+        <div class="row wrap mt-16" style="gap:8px">
+          <span class="badge b-teal">Auto-save 22%</span>
+          <span class="badge b-teal">Không nợ mới 4 tháng</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/charts.js"></script>
+<script>
+  initAppPage();
+  const R = SW_DATA.budgetReview;
+  const max = Math.max(...R.items.map(i => i.amt));
+
+  $("#allocList").innerHTML = R.items.map((i, idx) => `
+    <div style="margin-bottom:15px">
+      <div class="row between" style="margin-bottom:6px">
+        <span style="font-weight:600;font-size:13.5px">${i.name}</span>
+        <span class="num">${i.amt.toLocaleString("vi-VN")} ₫</span>
+      </div>
+      <div class="bar"><i data-w="${Math.round(i.amt / max * 100)}"></i></div>
+      <div class="small muted mt-8">${i.note}</div>
+    </div>`).join("");
+
+  $("#patternTxt").textContent = R.insight;
+  $("#note").value = R.note;
+  $("#note").disabled = true;
+
+  setTimeout(() => $$("[data-w]").forEach((b, i) => setTimeout(() => b.style.width = b.dataset.w + "%", i * 80)), 200);
+
+  window._charts = { "rv-donut": el => donut(el, 78, { color2: "#3b82f6" }) };
+  initCharts();
+
+  let state = "pending";
+  $("#approveBtn").addEventListener("click", () => {
+    if (state !== "pending") return;
+    state = "approved";
+    const badge = $(".topbar .badge");
+    badge.className = "badge b-green b-dot"; badge.style.fontSize = "12px";
+    badge.textContent = "Đã duyệt ✓";
+    const btn = $("#approveBtn");
+    btn.innerHTML = "✓ Đã duyệt"; btn.disabled = true;
+    toast("Đã duyệt ngân sách 24.000.000 ₫ của Minh Anh", "✅");
+  });
+  $("#rejectBtn").addEventListener("click", () => {
+    if (state !== "pending") return;
+    state = "changes";
+    const badge = $(".topbar .badge");
+    badge.className = "badge b-yellow b-dot"; badge.style.fontSize = "12px";
+    badge.textContent = "Đã yêu cầu chỉnh sửa";
+    $("#note").disabled = false; $("#note").focus();
+    toast("Đã gửi yêu cầu chỉnh sửa — học viên sẽ nhận thông báo", "📝");
+  });
+  $("#saveNote").addEventListener("click", e => { e.preventDefault(); toast("Đã lưu ghi chú coach", "💾"); });
+
+  $("#themeBtn").addEventListener("click", () => { const dark = toggleTheme(); $("#themeBtn").textContent = dark ? "☀️" : "🌙"; });
+  if (document.documentElement.dataset.theme === "dark") $("#themeBtn").textContent = "☀️";
+</script>
+</body>
+</html>

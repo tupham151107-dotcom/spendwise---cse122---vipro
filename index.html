@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpendWise — Rõ ràng khoản chi. Vững mọi mục tiêu.</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+
+<nav class="lnav">
+  <div class="container lnav-in">
+    <a class="logo" href="index.html"><span class="logo-mark">S</span> SpendWise</a>
+    <div class="lnav-links">
+      <a href="#features">Tính năng</a>
+      <a href="#how">Cách hoạt động</a>
+      <a href="#ai">Insight AI</a>
+      <a href="#pricing">Bảng giá</a>
+    </div>
+    <div class="lnav-cta">
+      <a class="btn btn-ghost btn-sm" href="login.html">Đăng nhập</a>
+      <a class="btn btn-primary btn-sm" href="register.html">Bắt đầu miễn phí</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="container hero-in">
+    <div>
+      <span class="badge-hero">✨ Quản lý tài chính cá nhân thông minh</span>
+      <h1>Rõ ràng khoản chi.<br><span class="grad">Vững mọi mục tiêu.</span></h1>
+      <p class="lead">SpendWise kết nối giao dịch, ngân sách và mục tiêu trong một bức tranh rõ ràng — thêm Insight AI để bạn hành động đúng lúc.</p>
+      <div class="hero-actions">
+        <a class="btn btn-lg btn-white" href="register.html">Tạo tài khoản miễn phí</a>
+        <a class="btn btn-lg btn-outline-w" href="#how">Xem cách hoạt động</a>
+      </div>
+      <div class="trust">
+        <span>🔒 Bảo mật</span><span>¥ Không chi phí ẩn</span><span>⚡ Thiết lập trong 5 phút</span>
+      </div>
+    </div>
+
+    <div class="hero-card" id="heroCard">
+      <div class="hc-head">
+        <h3>Tổng quan tháng 10</h3>
+        <span class="badge b-green b-dot">SỨC KHỎE TỐT</span>
+      </div>
+      <div class="hc-amount"><span data-count="28450000" data-money>0 ₫</span></div>
+      <div class="hc-io">
+        <span>Thu nhập <b class="up">35.000.000 ₫</b></span>
+        <span>Đã chi <b class="down">6.550.000 ₫</b></span>
+      </div>
+      <canvas data-chart="hero-bars" height="120" style="width:100%;margin-top:14px"></canvas>
+      <div class="ai-card mt-16" style="padding:12px 14px">
+        <div class="ai-ico" style="width:28px;height:28px;flex-basis:28px;font-size:13px">✦</div>
+        <div><b>INSIGHT AI</b><p class="small">Chi ăn uống tuần này tăng nhẹ — bạn vẫn cách mục tiêu Đà Nẵng 12.000.000 ₫.</p></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ TÍNH NĂNG ============ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Tính năng</span>
+      <h2>Một nơi cho toàn bộ tiền bạc</h2>
+      <p>Bốn trụ cột giúp bạn hiểu thói quen chi tiêu và tiến gần mục tiêu mỗi ngày.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="card hoverable feat reveal">
+        <div class="f-ico">🔁</div>
+        <h3>Theo dõi tự động</h3>
+        <p>Giao dịch được ghi nhận và phân loại theo thời gian thực, kèm gợi ý sửa khi AI không chắc chắn.</p>
+      </div>
+      <div class="card hoverable feat reveal">
+        <div class="f-ico">💰</div>
+        <h3>Ngân sách linh hoạt</h3>
+        <p>Chia hạn mức theo danh mục, nhận cảnh báo trước khi vượt — không phải chờ đến cuối tháng.</p>
+      </div>
+      <div class="card hoverable feat reveal">
+        <div class="f-ico">🎯</div>
+        <h3>Mục tiêu có đếm</h3>
+        <p>Mỗi mục tiêu có mốc tiến độ, ngày dự kiến và kế hoạch đóng góp hàng tháng rõ ràng.</p>
+      </div>
+      <div class="card hoverable feat reveal">
+        <div class="f-ico">✨</div>
+        <h3>Insight AI minh bạch</h3>
+        <p>Mọi đề xuất đều kèm lý do và độ tin cậy — bạn luôn hiểu vì sao AI nói như vậy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CÁCH HOẠT ĐỘNG ============ -->
+<section class="section" id="how" style="padding-top:20px">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Cách hoạt động</span>
+      <h2>Ba bước để bắt đầu</h2>
+    </div>
+    <div class="steps">
+      <div class="card step reveal"><h3>Kết nối nguồn chi</h3><p>Chọn ví, tài khoản hoặc nhập tay — SpendWise chuẩn hoá toàn bộ giao dịch về một dòng thời gian.</p></div>
+      <div class="card step reveal"><h3>Đặt ngân sách &amp; mục tiêu</h3><p>Chọn mẫu 50/30/20 hoặc tự chia. Mỗi mục tiêu có mốc tiến độ và ngày dự kiến đạt.</p></div>
+      <div class="card step reveal"><h3>Nhận insight mỗi tuần</h3><p>Insight AI tóm tắt xu hướng, cảnh báo rủi ro và gợi ý điều chỉnh nhỏ ngay khi còn kịp.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSIGHT AI ============ -->
+<section class="section" id="ai" style="padding-top:10px">
+  <div class="container">
+    <div class="ai-section reveal">
+      <div class="ai-grid">
+        <div>
+          <span class="eyebrow">Insight AI</span>
+          <h2>AI phân loại giao dịch ngay khi bạn nhập</h2>
+          <p>Mô hình tiếng Việt được kiểm duyệt bởi đội ngũ chuyên gia tài chính — chính xác 91,8% trong tuần này, và luôn cho bạn biết mức độ tin cậy của từng kết quả.</p>
+          <div class="row mt-24">
+            <a class="btn btn-lg" style="background:#fff;color:#5b21b6" href="register.html">Trải nghiệm ngay</a>
+          </div>
+        </div>
+        <div class="ai-demo" id="aiDemo">
+          <div class="ai-line"><span>🛵 GrabBike đi làm — 126K</span><span class="tag">Đi lại · 97%</span></div>
+          <div class="ai-line" style="animation-delay:.15s"><span>🍜 Bún bò Huế 05 — 45K</span><span class="tag">Ăn uống · 94%</span></div>
+          <div class="ai-line" style="animation-delay:.3s"><span>⚡ Tiền điện EVN — 742K</span><span class="tag">Hóa đơn · 99%</span></div>
+          <div class="ai-line" style="animation-delay:.45s"><span>🎬 CGV rạp Thảo Điền — 180K</span><span class="tag">Giải trí · 96%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BẢNG GIÁ ============ -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Bảng giá</span>
+      <h2>Bắt đầu miễn phí, nâng cấp khi cần</h2>
+    </div>
+    <div class="price-grid">
+      <div class="card hoverable price reveal">
+        <span class="badge b-green">Miễn phí</span>
+        <div class="p-amt">0 ₫<small> /mãi mãi</small></div>
+        <ul>
+          <li>Theo dõi giao dịch không giới hạn</li>
+          <li>3 ngân sách &amp; 3 mục tiêu</li>
+          <li>20 lượt Insight AI / tháng</li>
+        </ul>
+        <a class="btn btn-ghost btn-block" href="register.html">Tạo tài khoản</a>
+      </div>
+      <div class="card hoverable price hot reveal">
+        <span class="badge b-purple">Phổ biến nhất</span>
+        <div class="p-amt">59.000 ₫<small> /tháng</small></div>
+        <ul>
+          <li>Ngân sách &amp; mục tiêu không giới hạn</li>
+          <li>Insight AI không giới hạn</li>
+          <li>Coach đồng hành 1-1</li>
+          <li>Xuất báo cáo CSV &amp; PDF</li>
+        </ul>
+        <a class="btn btn-accent btn-block" href="register.html">Dùng thử 14 ngày</a>
+      </div>
+      <div class="card hoverable price reveal">
+        <span class="badge b-blue">Gia đình</span>
+        <div class="p-amt">99.000 ₫<small> /tháng</small></div>
+        <ul>
+          <li>Mọi tính năng gói Pro</li>
+          <li>Cho tới 5 thành viên</li>
+          <li>Báo cáo gộp gia đình</li>
+        </ul>
+        <a class="btn btn-ghost btn-block" href="register.html">Tìm hiểu thêm</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="lfooter">
+  <div class="container lfooter-in">
+    <span class="logo"><span class="logo-mark">S</span> SpendWise</span>
+    <span class="small">© 2026 SpendWise · Bảo mật &amp; quyền riêng tư · Làm với ❤️ tại Việt Nam</span>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/charts.js"></script>
+<script>
+  initReveal();
+  initCounters();
+
+  window._charts = {
+    "hero-bars": el => barChart(el, [62, 80, 55, 74, 58, 90], { gap: 10, dur: 1200 })
+  };
+  initCharts();
+
+  /* thẻ hero nghiêng theo con trỏ */
+  const hc = $("#heroCard");
+  hc.addEventListener("mousemove", e => {
+    const r = hc.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - .5;
+    const y = (e.clientY - r.top) / r.height - .5;
+    hc.style.transform = `rotate(1.4deg) perspective(700px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg)`;
+  });
+  hc.addEventListener("mouseleave", () => hc.style.transform = "");
+</script>
+</body>
+</html>

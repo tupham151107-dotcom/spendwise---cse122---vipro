@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng nhập — SpendWise</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div class="auth">
+
+  <aside class="auth-side">
+    <a class="logo" href="index.html"><span class="logo-mark">S</span> SpendWise</a>
+    <span class="eyebrow">CHÀO MỪNG TRỞ LẠI</span>
+    <h1>Tiếp tục hành trình tiền bạc rõ ràng.</h1>
+    <p>Đăng nhập để xem tiến độ mục tiêu, ngân sách và insight mới nhất của bạn.</p>
+
+    <div class="mini-card">
+      <div class="mc-label">TIẾT KIỆM THÁNG NÀY</div>
+      <div class="mc-val">6.250.000 ₫</div>
+      <span class="badge b-green">+18% so với tháng 9</span>
+      <div class="side-bars">
+        <i style="height:34%;animation-delay:.1s"></i><i style="height:52%;animation-delay:.2s"></i>
+        <i style="height:44%;animation-delay:.3s"></i><i style="height:66%;animation-delay:.4s"></i>
+        <i style="height:58%;animation-delay:.5s"></i><i style="height:82%;animation-delay:.6s"></i>
+      </div>
+    </div>
+    <div class="copyright">© 2026 SpendWise · Bảo mật &amp; quyền riêng tư</div>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-box">
+      <a class="auth-top-link" href="index.html">← Về trang chủ</a>
+      <h2>Đăng nhập</h2>
+      <p class="sub">Chào mừng trở lại! Nhập thông tin để tiếp tục.</p>
+
+      <button class="btn-google" id="btnGoogle" type="button">
+        <svg class="g-logo" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.2H12v4.1h6.5c-.1 1.1-.8 2.7-2.4 3.8l3.7 2.9c2.3-2.1 3.7-5.1 3.7-8.6z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.7-2.9c-1 .7-2.4 1.2-4.2 1.2-3.2 0-6-2.1-6.9-5.1L1.2 17.2C3.2 21.2 7.3 24 12 24z"/><path fill="#FBBC05" d="M5.1 14.3c-.3-.7-.4-1.5-.4-2.3s.1-1.6.4-2.3L1.2 6.7C.4 8.3 0 10.1 0 12s.4 3.7 1.2 5.3l3.9-3z"/><path fill="#EA4335" d="M12 4.7c1.8 0 3 .8 3.7 1.4l3.3-3.2C17.9 1.1 15.2 0 12 0 7.3 0 3.2 2.8 1.2 6.7l3.9 3c.9-3 3.7-5 6.9-5z"/></svg>
+        Tiếp tục với Google
+      </button>
+
+      <div class="divider">hoặc</div>
+
+      <div class="form-error" id="loginErr">⚠️ <span>Mật khẩu chưa đúng. Vui lòng kiểm tra và thử lại.</span></div>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input class="input" type="email" id="email" placeholder="......@gmail.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="pw">Mật khẩu</label>
+          <div class="input-wrap">
+            <input class="input" type="password" id="pw" placeholder="Nhập mật khẩu" autocomplete="current-password">
+            <button type="button" class="eye">👁️</button>
+          </div>
+        </div>
+        <div class="row between wrap" style="margin:2px 0 18px">
+          <label class="check"><input type="checkbox" checked><span class="box">✓</span> Ghi nhớ đăng nhập</label>
+          <a href="forgot-password.html" style="color:var(--accent-2);font-weight:600;font-size:13px">Quên mật khẩu?</a>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Đăng nhập</button>
+      </form>
+
+      <p class="auth-alt">Chưa có tài khoản? <a href="register.html">Tạo tài khoản mới</a></p>
+
+      <div class="card card-pad mt-24" style="border-style:dashed">
+        <b class="small" style="letter-spacing:.08em">⚡ ĐĂNG NHẬP NHANH (DEMO 5 VAI TRÒ)</b>
+        <p class="small muted mt-8">BTL demo — chọn vai trò để xem đúng luồng màn hình:</p>
+        <div class="row wrap mt-8" style="gap:8px">
+          <button class="btn btn-soft btn-sm" data-role="user">👤 Cá nhân</button>
+          <button class="btn btn-soft btn-sm" data-role="coach">🧑‍🏫 Coach</button>
+          <button class="btn btn-soft btn-sm" data-role="moderator">🛡️ Kiểm duyệt</button>
+          <button class="btn btn-soft btn-sm" data-role="admin">🛠️ Quản trị</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/vendor/supabase.js?v=6"></script>
+<script src="js/supabase-cloud.js?v=6"></script>
+<script src="js/data.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/login.js?v=3"></script>
+</body>
+</html>
