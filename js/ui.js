@@ -454,10 +454,10 @@ window.addEventListener("load", applyAvatars);
 
 /* ---------- sidebar + shell theo vai trò ---------- */
 const SW_NAV = {
-  user: { chip: "Cá nhân", chipCls: "b-green", home: "/app/dashboard.html", items: [
-    ["🗂️", "Tổng quan", "/app/dashboard.html"], ["🔁", "Giao dịch", "/app/transactions.html"],
-    ["💰", "Ngân sách", "/app/budgets.html"], ["🎯", "Mục tiêu", "/app/goals.html"],
-    ["✨", "Insight AI", "/app/dashboard.html#insight"], ["⚙️", "Cài đặt", "/app/settings.html"]
+  user: { chip: "Cá nhân", chipCls: "b-green", home: `${SITE_ROOT}app/dashboard.html`, items: [
+    ["🗂️", "Tổng quan", `${SITE_ROOT}app/dashboard.html`], ["🔁", "Giao dịch", `${SITE_ROOT}app/transactions.html`],
+    ["💰", "Ngân sách", `${SITE_ROOT}app/budgets.html`], ["🎯", "Mục tiêu", `${SITE_ROOT}app/goals.html`],
+    ["✨", "Insight AI", `${SITE_ROOT}app/dashboard.html#insight`], ["⚙️", "Cài đặt", `${SITE_ROOT}app/settings.html`]
   ]},
   coach: { chip: "Coach", chipCls: "b-blue", home: "clients.html", items: [
     ["👥", "Khách hàng", "clients.html"], ["🧾", "Duyệt ngân sách", "budget-review.html"],
@@ -726,10 +726,10 @@ function renderShell() {
       <span class="badge role-chip ${conf.chipCls}">${conf.chip}</span>
       <button class="topnav-tool" id="sidebarNotiBtn" type="button" title="Thông báo" aria-label="Thông báo">🔔<span class="sidebar-noti-dot"></span></button>
       <button class="topnav-tool" id="themeBtn" type="button" title="Đổi giao diện" aria-label="Đổi giao diện">🌙</button>
-      <a class="avatar topnav-avatar" id="avatar" href="${role === "user" ? "/app/profile.html" : "profile.html"}" title="Hồ sơ" aria-label="Mở hồ sơ">${uname.slice(0, 2).toUpperCase()}</a>
+      <a class="avatar topnav-avatar" id="avatar" href="${role === "user" ? `${SITE_ROOT}app/profile.html` : "profile.html"}" title="Hồ sơ" aria-label="Mở hồ sơ">${uname.slice(0, 2).toUpperCase()}</a>
     </div>
     <section class="sidebar-noti-popover" id="sidebarNotiPopover" aria-label="Thông báo" hidden>
-      <header><b>Thông báo</b><a href="${role === "user" ? "/app/notifications.html" : "notifications.html"}">Xem tất cả</a></header>
+      <header><b>Thông báo</b><a href="${role === "user" ? `${SITE_ROOT}app/notifications.html` : "notifications.html"}">Xem tất cả</a></header>
       <div class="sidebar-noti-list" id="sidebarNotiList"></div>
     </section>`;
   document.body.prepend(topnav);
@@ -742,7 +742,7 @@ function renderShell() {
         ? `<a href="${href}" title="${label}" class="${label === here ? "active" : ""}"><span class="ico">${ico}</span>${label}</a>`
         : `<a href="#" title="${label}" data-soon="${label}"><span class="ico">${ico}</span>${label}</a>`).join("")}
     </nav>
-    <a class="user-box sidebar-profile" href="${role === "user" ? "/app/profile.html" : "profile.html"}" title="Hồ sơ cá nhân">
+    <a class="user-box sidebar-profile" href="${role === "user" ? `${SITE_ROOT}app/profile.html` : "profile.html"}" title="Hồ sơ cá nhân">
       <span class="avatar">${uname.slice(0, 2).toUpperCase()}</span>
       <div><b>${uname}</b><span>${umail}</span></div>
     </a>
