@@ -18,6 +18,8 @@ body[data-role] { display: flex; min-height: 100vh; align-items: stretch; }
 .topnav-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 .topnav .role-chip { margin-left: 0; }
 .topnav-tool { width: 38px; height: 38px; display: grid; place-items: center; position: relative; border: 1px solid rgba(255,255,255,.15); border-radius: 12px; color: #e4f4eb; background: rgba(255,255,255,.08); font-size: 17px; cursor: pointer; }
+.topnav #sidebarNotiBtn { border-radius: 50%; }
+.notification-bell { width: 20px; height: 20px; display: block; }
 .topnav-tool:hover { background: rgba(255,255,255,.17); color: #fff; }
 .topnav .topnav-tool.icon-btn { border-color: rgba(255,255,255,.15); color: #e4f4eb; background: rgba(255,255,255,.08); }
 .topnav .topnav-tool.icon-btn:hover { border-color: rgba(255,255,255,.25); color: #fff; background: rgba(255,255,255,.17); }

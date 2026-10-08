@@ -596,7 +596,7 @@ function renderShell() {
     <a class="logo" href="${conf.home}"><span class="logo-mark">S</span><span>SpendWise</span></a>
     <div class="topnav-actions">
       <span class="badge role-chip ${conf.chipCls}">${conf.chip}</span>
-      <button class="topnav-tool" id="sidebarNotiBtn" type="button" title="Thông báo" aria-label="Thông báo">🔔<span class="sidebar-noti-dot"></span></button>
+      <button class="topnav-tool" id="sidebarNotiBtn" type="button" title="Thông báo" aria-label="Thông báo"><svg class="notification-bell" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sidebar-noti-dot"></span></button>
       <button class="topnav-tool" id="themeBtn" type="button" title="Đổi giao diện" aria-label="Đổi giao diện">🌙</button>
       <a class="avatar topnav-avatar" id="avatar" href="profile.html" title="Hồ sơ" aria-label="Mở hồ sơ">${uname.slice(0, 2).toUpperCase()}</a>
     </div>
