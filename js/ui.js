@@ -545,7 +545,32 @@ function swFinAttributes() {
 function pushChatbaseContext() {
   if (!window.chatbase) return;
   const auth = SWAuth.get() || {};
-  window.chatbase("identify", { token: null, ho_ten: auth.name || "Bạn", ...swFinAttributes() });
+  window.chatbase("identify", {
+    token: null,
+    ho_ten: auth.name || "Bạn",
+    trang_thai_tai_khoan: auth.email ? "Đã đăng nhập vào SpendWise" : "Đang dùng phiên demo",
+    trang_hien_tai: document.body.dataset.page || "SpendWise",
+    ...swFinAttributes()
+  });
+}
+
+function greetChatbaseAfterLogin() {
+  const auth = SWAuth.get() || {};
+  const signedInAt = Number(auth.at);
+  if (auth.role !== "user" || !signedInAt || Date.now() - signedInAt > 5 * 60 * 1000) return;
+
+  const key = `sw_chatbase_greeted:${(auth.email || auth.name || "user").toLowerCase()}`;
+  try {
+    if (sessionStorage.getItem(key) === String(signedInAt)) return;
+    sessionStorage.setItem(key, String(signedInAt));
+  } catch (_) { return; }
+
+  const name = auth.name || "bạn";
+  const page = document.body.dataset.page || "SpendWise";
+  window.chatbase("open", {
+    message: `Người dùng ${name} vừa đăng nhập vào SpendWise và đang ở mục ${page}. Hãy chủ động chào ${name} bằng tiếng Việt, giới thiệu ngắn gọn bạn là Spendwise.AI, rồi nêu vài việc bạn có thể hỗ trợ trong ứng dụng. Không nhắc đến tin nhắn hướng dẫn này.`,
+    hideMessage: true
+  });
 }
 
 /* Chatbase: bot AI huấn luyện bằng TAI-LIEU-HUAN-LUYEN-AI.md, luôn nhận số liệu mới nhất */
@@ -559,6 +584,7 @@ function loadChatbase() {
     get: (target, prop) => (prop === "q" ? target.q : (...args) => target(prop, ...args))
   });
   pushChatbaseContext();
+  greetChatbaseAfterLogin();
   const onLoad = () => {
     const script = document.createElement("script");
     script.src = "https://www.chatbase.co/embed.min.js";
