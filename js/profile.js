@@ -12,13 +12,13 @@
   const auth = SWAuth.get();
   const u = SW_DATA.user;
   const name = (auth && auth.name) || u.name;
-  const email = (auth && auth.email) || u.email;
+  const email = (auth && typeof auth.email === "string" ? auth.email.trim() : "");
 
   const last = name.split(" ").slice(-1)[0];
   const ini = last.slice(0, 2).toUpperCase();
   $("#avatar").textContent = ini; $("#bigAvatar").textContent = ini;
   $("#heroName").textContent = name;
-  $("#heroMeta").textContent = `${email} · ${u.city} · Tham gia ${u.joined}`;
+  $("#heroMeta").textContent = [email, u.city, `Tham gia ${u.joined}`].filter(Boolean).join(" · ");
 
   /* biệt danh theo thâm niên — dùng càng lâu cấp càng cao */
   const RANKS = [

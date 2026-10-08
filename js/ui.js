@@ -576,7 +576,7 @@ function renderShell() {
   const auth = SWAuth.get();
   const names = { user: "Minh Anh", coach: "Lan Phương", moderator: "Mai Phương", admin: "Admin Tuấn" };
   const uname = role === "user" ? ((auth && auth.name) || SW_DATA.user.short).split(" ").slice(-1)[0] : names[role];
-  const umail = role === "user" ? ((auth && auth.email) || SW_DATA.user.email) : `${uname.toLowerCase().replace(/\s/g, "")}@sw.vn`;
+  const umail = role === "user" ? ((auth && auth.email) || "") : `${uname.toLowerCase().replace(/\s/g, "")}@sw.vn`;
   if (role === "user") loadChatbase();
 
   /* thanh xanh trên cùng kiểu YouTube: nút mở/thu thanh bên + logo tên web */
