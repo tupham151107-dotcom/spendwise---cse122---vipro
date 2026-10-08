@@ -2,6 +2,7 @@
 (function () {
   const url = "https://lhtglhcohqfdzgowubba.supabase.co";
   const key = "sb_publishable_DzbrtGXXzb-aqti4QItOFw_lelN6VIW";
+  const loginRedirectUrl = () => new URL("login.html", location.href).href;
   const sdk = window.supabase || (typeof supabase !== "undefined" ? supabase : null);
   if (!sdk || !url || !key) {
     window.SW_SUPABASE = null;
@@ -62,7 +63,7 @@
         options: {
           shouldCreateUser: true,
           data: name ? { full_name: name.trim() } : undefined,
-          emailRedirectTo: `${location.origin}/login.html`
+          emailRedirectTo: loginRedirectUrl()
         }
       });
       if (error) throw error;
@@ -82,7 +83,7 @@
       const { data, error } = await client.auth.resend({
         type: "signup",
         email: email.trim(),
-        options: { emailRedirectTo: `${location.origin}/login.html` }
+        options: { emailRedirectTo: loginRedirectUrl() }
       });
       if (error) throw error;
       return data;
@@ -92,7 +93,7 @@
         email: email.trim(), password,
         options: {
           data: { full_name: name.trim() },
-          emailRedirectTo: `${location.origin}/login.html`
+          emailRedirectTo: loginRedirectUrl()
         }
       });
       if (error) throw error;
@@ -108,7 +109,7 @@
         password: temporaryPassword,
         options: {
           data: { full_name: (name || "Bạn").trim() },
-          emailRedirectTo: `${location.origin}/login.html`
+          emailRedirectTo: loginRedirectUrl()
         }
       });
       if (error) throw error;
@@ -142,7 +143,7 @@
       const { error } = await client.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${location.origin}/login.html`,
+          redirectTo: loginRedirectUrl(),
           queryParams: { prompt: "select_account" }
         }
       });

@@ -98,7 +98,7 @@ const pw = $("#pw"), pw2 = $("#pw2");
         const result = await SWCloud.startSignupOtp($("#name").value.trim(), email);
         if (result.session) {
           toast("Email đã được xác nhận. Đang mở SpendWise 🎉");
-          setTimeout(() => location.href = "/app/dashboard.html", 500);
+          setTimeout(() => location.href = "app/dashboard.html", 500);
           return;
         }
         otpSent = true;
@@ -173,7 +173,7 @@ const pw = $("#pw"), pw2 = $("#pw2");
       sessionStorage.removeItem("sw_signup_pending_email");
       sessionStorage.removeItem("sw_signup_otp_verified");
       toast("Xác nhận thành công! Đang mở SpendWise 🎉");
-      setTimeout(() => location.href = "/app/dashboard.html", 500);
+      setTimeout(() => location.href = "app/dashboard.html", 500);
     } catch (error) {
       showError(error.message || "Mã OTP không đúng hoặc đã hết hạn.");
     }

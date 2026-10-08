@@ -403,7 +403,11 @@ function initLiveFilter(root = document) {
 
 /* ---------- auth (mô phỏng) ---------- */
 const IN_SUBFOLDER = /\/(app|coach|moderator|admin)\//.test(location.pathname);
-const LOGIN_URL = "/login.html";
+const SITE_ROOT = (() => {
+  const nestedPage = location.pathname.match(/^(.*?\/)(?:app|coach|moderator|admin)\//);
+  return nestedPage ? nestedPage[1] : location.pathname.slice(0, location.pathname.lastIndexOf("/") + 1);
+})();
+const LOGIN_URL = `${SITE_ROOT}login.html`;
 const SWAuth = {
   KEY: "sw_auth",
   get() { try { return JSON.parse(localStorage.getItem(this.KEY)); } catch { return null; } },

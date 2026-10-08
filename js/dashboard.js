@@ -111,7 +111,7 @@
       <td class="muted">${t.date}</td>
       <td class="num" style="text-align:right"><span class="${t.amount > 0 ? "money-pos" : "money-neg"}">${fmtMoneySign(t.amount)}</span></td>
     </tr>`).join("") :
-    `<tr><td colspan="4" style="text-align:center;padding:30px 0" class="muted">Chưa có giao dịch nào — <a class="link" href="/app/transactions.html">thêm giao dịch đầu tiên →</a></td></tr>`;
+    `<tr><td colspan="4" style="text-align:center;padding:30px 0" class="muted">Chưa có giao dịch nào — <a class="link" href="transactions.html">thêm giao dịch đầu tiên →</a></td></tr>`;
 
   /* đổi theme */
   $("#themeBtn").addEventListener("click", () => {

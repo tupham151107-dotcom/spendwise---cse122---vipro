@@ -62,7 +62,7 @@ initAppPage();
   });
 
   $("#handleBtn").addEventListener("click", () => {
-    if (window.SW_FRESH) { location.href = "/app/transactions.html"; return; }
+    if (window.SW_FRESH) { location.href = "transactions.html"; return; }
     const odd = notis.find(n => n.title.includes("lạ"));
     if (odd) { odd.unread = false; render(); initTabs(); }
     toast("Giao dịch Tech Shop đã được xác nhận là của bạn", "🛡️");
