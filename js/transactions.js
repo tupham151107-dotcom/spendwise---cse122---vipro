@@ -1,5 +1,11 @@
 initAppPage();
-  const ICO = { "Ăn uống": "c-Ăn", "Đi lại": "c-Đi", "Nhà ở": "c-Nhà", "Giải trí": "c-Giải", "Hóa đơn": "c-Hóa", "Mua sắm": "c-Mua", "Thu nhập": "c-Th" };
+  const ICO = { "Ăn uống": "c-Ăn", "Đi lại": "c-Đi", "Nhà ở": "c-Nhà", "Giải trí": "c-Giải", "Hóa đơn": "c-Hóa", "Mua sắm": "c-Mua", "Thu nhập": "c-Th", "Tiết kiệm": "c-Save", "Lương": "c-Th", "Thu nhập khác": "c-Th", "Tiền chuyển đến": "c-Th", "Thu lãi": "c-Th", "Cho vay": "c-Loan", "Trả nợ": "c-Loan", "Thu nợ": "c-Loan", "Đi vay": "c-Loan" };
+  const CATEGORY_GROUPS = {
+    expense: [["Ăn uống", "🍜"], ["Đi lại", "🛵"], ["Nhà ở", "🏠"], ["Giải trí", "🎬"], ["Hóa đơn", "🧾"], ["Mua sắm", "🛍️"], ["Tiết kiệm", "🐷"], ["Khác", "📦"]],
+    income: [["Lương", "💵"], ["Thu nhập khác", "📦"], ["Tiền chuyển đến", "👛"], ["Thu lãi", "📈"]],
+    debt: [["Cho vay", "💸"], ["Trả nợ", "💳"], ["Thu nợ", "🤝"], ["Đi vay", "💰"]]
+  };
+  let activeCategoryGroup = "expense";
   let txs = [...SW_DATA.transactions];
 
   /* tài khoản mới: bảng trống + ẩn thanh gợi ý AI demo */
@@ -15,7 +21,7 @@ initAppPage();
   function render() {
     $("#txBody").innerHTML = txs.map(t => `
       <tr>
-        <td><div class="tx-desc"><span class="tx-ico ${ICO[t.cat] || "c-Khác"}"></span><div><b>${t.desc}</b><div class="small muted">${t.cat === "Thu nhập" ? "Nguồn thu" : "Thanh toán " + t.acc}</div></div></div></td>
+        <td><div class="tx-desc"><span class="tx-ico ${ICO[t.cat] || "c-Khác"}"></span><div><b>${t.desc}</b><div class="small muted">${t.type === "Tiết kiệm" || t.cat === "Tiết kiệm" ? "Khoản tiết kiệm" : t.amount > 0 ? "Nguồn thu" : "Thanh toán " + t.acc}</div></div></div></td>
         <td><span class="badge ${t.amount > 0 ? "b-green" : "b-gray"}">${t.cat}</span></td>
         <td class="muted">${t.acc}</td>
         <td class="muted">${t.date}</td>
@@ -35,6 +41,47 @@ initAppPage();
     SWStore.save({ transactions: txs, notifications: SW_DATA.notifications });
   }
   render();
+
+  function renderCategoryOptions(selected = $("#fCat").value) {
+    const options = CATEGORY_GROUPS[activeCategoryGroup];
+    $("#fCategoryOptions").innerHTML = options.map(([name, icon]) => `
+      <button class="tx-category-option${name === selected ? " selected" : ""}" type="button" role="option" aria-selected="${name === selected}" data-category="${name}">
+        <span class="tx-option-ico" aria-hidden="true">${icon}</span><span>${name}</span>
+      </button>`).join("");
+    $$("[data-category-tab]").forEach(tab => {
+      const active = tab.dataset.categoryTab === activeCategoryGroup;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", String(active));
+    });
+  }
+  function selectCategoryGroup(group, preferred) {
+    activeCategoryGroup = group;
+    const current = $("#fCat").value;
+    const valid = CATEGORY_GROUPS[group].some(([name]) => name === current);
+    const next = preferred || (valid ? current : CATEGORY_GROUPS[group][0][0]);
+    $("#fCat").value = next;
+    if (group === "income") $("#fSign").value = "+";
+    else if (group === "expense") $("#fSign").value = next === "Tiết kiệm" ? "savings" : "-";
+    else $("#fSign").value = ["Thu nợ", "Đi vay"].includes(next) ? "+" : "-";
+    renderCategoryOptions(next);
+  }
+  renderCategoryOptions();
+  $$("[data-category-tab]").forEach(tab => tab.addEventListener("click", () => selectCategoryGroup(tab.dataset.categoryTab)));
+  $("#fCategoryOptions").addEventListener("click", e => {
+    const option = e.target.closest("[data-category]");
+    if (!option) return;
+    const category = option.dataset.category;
+    $("#fCat").value = category;
+    if (activeCategoryGroup === "debt") $("#fSign").value = ["Thu nợ", "Đi vay"].includes(category) ? "+" : "-";
+    else if (activeCategoryGroup === "income") $("#fSign").value = "+";
+    else $("#fSign").value = category === "Tiết kiệm" ? "savings" : "-";
+    renderCategoryOptions(category);
+  });
+  $("#fSign").addEventListener("change", e => {
+    if (e.target.value === "savings") selectCategoryGroup("expense", "Tiết kiệm");
+    else if (e.target.value === "+") selectCategoryGroup("income");
+    else selectCategoryGroup("expense", $("#fCat").value === "Tiết kiệm" ? "Ăn uống" : undefined);
+  });
 
   /* lọc theo danh mục */
   $("#catFilter").addEventListener("change", e => {
@@ -62,7 +109,9 @@ initAppPage();
     [/điện|nước|net|wifi|internet|evn|hóa đơn|nhà thuê|rent/i, "Hóa đơn"],
     [/netflix|film|cinema|cgv|game|spotify|karaoke/i, "Giải trí"],
     [/shopee|lazada|tiki|quần|áo|giày|sắm/i, "Mua sắm"],
-    [/lương|thưởng|freelance|thu nhập|bonus|interest/i, "Thu nhập"]
+    [/lương|thưởng|freelance|thu nhập|bonus|interest/i, "Lương"],
+    [/tiết kiệm|bỏ ống|gửi tiết kiệm/i, "Tiết kiệm"],
+    [/cho vay/i, "Cho vay"], [/đi vay/i, "Đi vay"], [/trả nợ/i, "Trả nợ"], [/thu nợ/i, "Thu nợ"]
   ];
   $("#fDesc").addEventListener("input", e => {
     const v = e.target.value;
@@ -70,7 +119,10 @@ initAppPage();
     $("#aiSuggestTxt").innerHTML = hit
       ? `AI đoán danh mục <b style="color:var(--purple)">${hit[1]}</b> — đã chọn giúp bạn (chỉnh sửa nếu cần)`
       : "Nhập mô tả để nhận gợi ý…";
-    if (hit) $("#fCat").value = hit[1];
+    if (hit) {
+      const group = hit[1] === "Tiết kiệm" || ["Ăn uống", "Đi lại", "Hóa đơn", "Giải trí", "Mua sắm", "Nhà ở", "Khác"].includes(hit[1]) ? "expense" : ["Cho vay", "Đi vay", "Trả nợ", "Thu nợ"].includes(hit[1]) ? "debt" : "income";
+      selectCategoryGroup(group, hit[1]);
+    }
   });
 
   /* ô số tiền tự chấm phần nghìn: 65000 -> 65.000 */
@@ -88,19 +140,23 @@ initAppPage();
       [$("#fDesc"), $("#fAmt")].forEach(i => { if (!i.value) { i.classList.add("invalid"); setTimeout(() => i.classList.remove("invalid"), 600); } });
       return;
     }
-    txs.unshift({ desc, cat: $("#fCat").value, acc: "MoMo", date: new Date().toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" }), amount: ($("#fSign").value === "-" ? -1 : 1) * amt });
+    const sign = $("#fSign").value;
+    const category = $("#fCat").value;
+    const incoming = sign === "+";
+    const isSavings = sign === "savings" || category === "Tiết kiệm";
+    txs.unshift({ desc, cat: isSavings ? "Tiết kiệm" : category, acc: "MoMo", date: new Date().toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" }), amount: incoming && !isSavings ? amt : -amt, type: isSavings ? "Tiết kiệm" : incoming ? "Thu nhập" : "Chi tiêu" });
 
     /* thông báo kiểu ngân hàng cho giao dịch mới */
-    const thu = $("#fSign").value === "+";
+    const thu = incoming && !isSavings;
     const now = new Date();
     SW_DATA.notifications.unshift({
       id: Date.now(),
       group: "Hôm nay",
-      type: thu ? "Thu nhập" : "Chi tiêu",
-      tone: thu ? "green" : "orange",
-      ico: thu ? "🪙" : "💸",
+      type: isSavings ? "Tiết kiệm" : thu ? "Thu nhập" : "Chi tiêu",
+      tone: thu ? "green" : isSavings ? "purple" : "orange",
+      ico: thu ? "🪙" : isSavings ? "🐷" : "💸",
       title: "SW thông báo tới quý khách",
-      desc: `Thời gian giao dịch: ${now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })} ${now.toLocaleDateString("vi-VN")}<br>Số tiền GD: ${amt.toLocaleString("vi-VN")} ₫<br>Nội dung: ${thu ? "Thu nhập" : "Chi tiêu"} — ${desc}`,
+      desc: `Thời gian giao dịch: ${now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })} ${now.toLocaleDateString("vi-VN")}<br>Số tiền GD: ${amt.toLocaleString("vi-VN")} ₫<br>Nội dung: ${isSavings ? "Tiết kiệm" : thu ? "Thu nhập" : "Chi tiêu"} — ${desc}`,
       action: "Xem giao dịch",
       unread: true
     });

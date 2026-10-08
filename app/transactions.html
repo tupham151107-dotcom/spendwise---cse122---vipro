@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Giao dịch — SpendWise</title>
 <link rel="stylesheet" href="../css/base.css?v=2">
-<link rel="stylesheet" href="../css/app.css?v=4">
+<link rel="stylesheet" href="../css/app.css?v=5">
 </head>
 <body data-role="user" data-page="Giao dịch" data-auth="required">
 
@@ -34,7 +34,9 @@
     <select class="select" style="width:auto" id="catFilter">
       <option value="">≡ Danh mục: Tất cả</option>
       <option>Ăn uống</option><option>Đi lại</option><option>Nhà ở</option>
-      <option>Giải trí</option><option>Hóa đơn</option><option>Mua sắm</option><option>Thu nhập</option>
+      <option>Giải trí</option><option>Hóa đơn</option><option>Mua sắm</option><option>Tiết kiệm</option>
+      <option>Lương</option><option>Thu nhập khác</option><option>Tiền chuyển đến</option><option>Thu lãi</option>
+      <option>Cho vay</option><option>Trả nợ</option><option>Thu nợ</option><option>Đi vay</option>
     </select>
     <button class="btn btn-accent" data-modal="#txModal">+ Thêm giao dịch</button>
   </div>
@@ -98,14 +100,22 @@
         </div>
         <div class="field">
           <label>Loại</label>
-          <select class="select" id="fSign"><option value="-">Chi tiêu</option><option value="+">Thu nhập</option></select>
+          <select class="select" id="fSign"><option value="-">Chi tiêu</option><option value="+">Thu nhập</option><option value="savings">Tiết kiệm</option></select>
         </div>
       </div>
       <div class="field">
         <label>Danh mục <span class="muted small">(AI gợi ý — bạn có thể sửa)</span></label>
-        <select class="select" id="fCat">
+        <div class="tx-category-tabs" role="tablist" aria-label="Nhóm danh mục">
+          <button class="tx-category-tab active" type="button" role="tab" aria-selected="true" data-category-tab="expense">Khoản chi</button>
+          <button class="tx-category-tab" type="button" role="tab" aria-selected="false" data-category-tab="income">Khoản thu</button>
+          <button class="tx-category-tab" type="button" role="tab" aria-selected="false" data-category-tab="debt">Vay/Nợ</button>
+        </div>
+        <div class="tx-category-options" id="fCategoryOptions" role="listbox" aria-label="Danh mục giao dịch"></div>
+        <select class="select tx-category-native" id="fCat" aria-label="Danh mục">
           <option>Ăn uống</option><option>Đi lại</option><option>Nhà ở</option><option>Giải trí</option>
-          <option>Hóa đơn</option><option>Mua sắm</option><option>Thu nhập</option><option>Khác</option>
+          <option>Hóa đơn</option><option>Mua sắm</option><option>Tiết kiệm</option><option>Lương</option>
+          <option>Thu nhập khác</option><option>Tiền chuyển đến</option><option>Thu lãi</option>
+          <option>Cho vay</option><option>Trả nợ</option><option>Thu nợ</option><option>Đi vay</option><option>Khác</option>
         </select>
       </div>
       <div class="row" id="aiSuggest" style="background:var(--purple-soft);border:1px solid var(--purple-line);border-radius:11px;padding:9px 13px;font-size:12.5px;margin-bottom:14px">
@@ -121,6 +131,6 @@
 <script src="../js/data.js"></script>
 <script src="../js/ui.js?v=7"></script>
 <script src="../js/charts.js"></script>
-<script src="../js/transactions.js?v=2"></script>
+<script src="../js/transactions.js?v=3"></script>
 </body>
 </html>
