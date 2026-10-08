@@ -308,18 +308,4 @@ body[data-role] { display: flex; min-height: 100vh; align-items: stretch; }
 .saved-edit:hover { border-bottom-color: var(--accent); }
 .saved-edit:hover b { color: var(--accent); }
 
-/* ---------- trợ lý AI Chatbase (bong bóng duy nhất) ---------- */
-#chatbase-bubble-button { right: 24px !important; bottom: 88px !important; cursor: grab !important; touch-action: none !important; animation: sw-ai-bob 1.25s ease-in-out infinite !important; }
-#chatbase-bubble-button[data-sw-drag-active="true"] { animation-play-state: paused !important; }
-@keyframes sw-ai-bob {
-  0%, 100% { translate: 0 0; scale: 1; }
-  50% { translate: 0 -24px; scale: 1.14; }
-}
-#chatbase-bubble-window { right: 24px !important; bottom: 158px !important; max-height: calc(100vh - 182px) !important; }
-@media (max-width: 560px) {
-  #chatbase-bubble-button { right: 12px !important; bottom: 78px !important; }
-  #chatbase-bubble-window { right: 12px !important; bottom: 144px !important; max-height: calc(100dvh - 162px) !important; }
-}
-@media (prefers-reduced-motion: reduce) {
-  #chatbase-bubble-button { animation: none !important; }
-}
+/* Giữ nguyên vị trí và xử lý mở/đóng mặc định của widget Chatbase. */

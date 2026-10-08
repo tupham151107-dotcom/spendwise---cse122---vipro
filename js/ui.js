@@ -682,7 +682,6 @@ function loadChatbase() {
     get: (target, prop) => (prop === "q" ? target.q : (...args) => target(prop, ...args))
   });
   pushChatbaseContext();
-  enableChatbaseBubbleDrag();
   const onLoad = () => {
     const script = document.createElement("script");
     script.src = "https://www.chatbase.co/embed.min.js";
